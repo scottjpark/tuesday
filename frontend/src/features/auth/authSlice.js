@@ -1,28 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { register } from './authActions'
 
 const initialState = {
-    user_id: '',
-    username: '',
-    logged_in: false
+    username: null,
+    loggedIn: false,
+    loading: false,
+    registered: false,
 }
-
 export const authSlice = createSlice({
-    name: 'user',
+    name: 'auth',
     initialState,
-    reducers: {
-        login: (state, action) => {
-            state.user_id = action.payload.user_id
-            state.username = action.payload.username
-            state.logged_in = true
-        },
-        logout: (state) => {
-            state.user_id = ''
-            state.username = ''
-            state.logged_in = false
-        },
+    reducers: {},
+    extraReducers: builder => {
+        builder
+            .addCase(register.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(register.fulfilled, (state) => {
+                state.registered = true
+                state.loading = false
+            })
+            .addCase(register.rejected, (state) => {
+                state.loading = false
+            })
     }
 })
-
-export const { login, logout } = authSlice.actions
 
 export default authSlice.reducer

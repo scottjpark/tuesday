@@ -12,6 +12,7 @@ export function NavBar() {
 
     return (
         <div>
+            {isAuth ? 'Logout' : <Link to='/signup'>Register</Link>}
             {isAuth ? 'Logout' : <Link to='/login'>Login</Link>}
         </div>
     )
