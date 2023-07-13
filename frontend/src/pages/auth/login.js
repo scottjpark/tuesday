@@ -1,18 +1,27 @@
 import React, { useState } from 'react'
+import { login } from '../../features/auth/authActions';
+import { useSelector, useDispatch } from 'react-redux'
+import { Navigate } from 'react-router-dom'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const { loggedIn, loading } = useSelector(state => state.user)
+    const dispatch = useDispatch()
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const user = {
             username: username,
             password: password
         }
-        console.log(user)
+        dispatch(login(user))
     }
 
+
+    if (loggedIn) return <Navigate to='/loggedIn' />
     return (
         <form id='auth'>
             <label>Username</label>
@@ -30,10 +39,13 @@ export function Login() {
                 placeholder='Password'
                 name='password'
                 type='password'
-                value={username}
+                value={password}
                 onChange={e => setPassword(e.target.value)}
             />
-            <button type='submit' onClick={handleSubmit}>Submit</button>
+            {loading ?
+                <CircularProgress /> :
+                <button type='submit' onClick={handleSubmit}>Submit</button>
+            }
         </form>
     )
 }

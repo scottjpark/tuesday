@@ -9,8 +9,7 @@ export function SignUp() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
-    const { registered, loading } = useSelector(state => state.user)
-
+    const { loggedIn, loading } = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     const handleSubmit = async (e) => {
@@ -20,11 +19,10 @@ export function SignUp() {
             password: password,
             email: email
         }
-
         dispatch(register(user))
     }
 
-    if (registered) return <Navigate to='/loggedIn' />
+    if (loggedIn) return <Navigate to='/loggedIn' />
     return (
         <form id='auth'>
             <label>Username</label>

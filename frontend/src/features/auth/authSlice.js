@@ -1,11 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { register } from './authActions'
+import { register, login } from './authActions'
 
 const initialState = {
     username: null,
     loggedIn: false,
     loading: false,
-    registered: false,
 }
 export const authSlice = createSlice({
     name: 'auth',
@@ -17,11 +16,14 @@ export const authSlice = createSlice({
                 state.loading = true
             })
             .addCase(register.fulfilled, (state) => {
-                state.registered = true
+                state.loggedIn = true
                 state.loading = false
             })
             .addCase(register.rejected, (state) => {
                 state.loading = false
+            })
+            .addCase(login, (state, payload) => {
+                console.log(state, payload)
             })
     }
 })
