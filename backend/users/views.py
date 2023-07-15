@@ -32,36 +32,5 @@ class ResetUserView(APIView):
     def post(self, request):
         response = HttpResponse('Logged out')
         response.delete_cookie(key='refresh')
+        response.delete_cookie(key='access')
         return response
-
-from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenRefreshSerializer
-from rest_framework_simplejwt.exceptions import InvalidToken
-
-class CookieTokenRefreshSerializer(TokenRefreshSerializer):
-    refresh = None
-    def validate(self, attrs):
-        attrs['refresh'] = self.context['request'].COOKIES.get('refresh_token')
-        if attrs['refresh']:
-            return super().validate(attrs)
-        else:
-            raise InvalidToken('No valid token found in cookie \'refresh_token\'')
-
-class CookieTokenObtainPairView(TokenObtainPairView):
-  def finalize_response(self, request, response, *args, **kwargs):
-    if response.data.get('refresh'):
-        cookie_max_age = settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']
-        response.set_cookie('refresh', response.data['refresh'], max_age=cookie_max_age, httponly=True )
-        del response.data['refresh']
-
-    return super().finalize_response(request, response, *args, **kwargs)
-
-class CookieTokenRefreshView(TokenRefreshView):
-    def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get('refresh'):
-            cookie_max_age = settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']
-            response.set_cookie('refresh', response.data['refresh'], max_age=cookie_max_age, httponly=True )
-            del response.data['refresh']
-
-        return super().finalize_response(request, response, *args, **kwargs)
-    serializer_class = CookieTokenRefreshSerializer

@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { register, login, getUser, logout } from './authActions'
+import { register, login, getUser, logout, verify } from './authActions'
 
 const initialState = {
     user: null,
     loggedIn: false,
     loading: false,
+    isAuthenticated: false,
 }
 export const authSlice = createSlice({
     name: 'auth',
@@ -16,8 +17,7 @@ export const authSlice = createSlice({
                 state.loading = true
             })
             .addCase(register.fulfilled, (state) => {
-                state.loggedIn = true
-                state.loading = false
+                state.loading = true
             })
             .addCase(register.rejected, (state) => {
                 state.loading = false
@@ -26,8 +26,7 @@ export const authSlice = createSlice({
                 state.loading = true
             })
             .addCase(login.fulfilled, (state) => {
-                state.loading = false
-                state.loggedIn = true
+                state.loading = true
             })
             .addCase(login.rejected, (state) => {
                 state.loading = false
@@ -36,6 +35,7 @@ export const authSlice = createSlice({
                 state.loading = true
             })
             .addCase(getUser.fulfilled, (state, payload) => {
+                state.loggedIn = true
                 state.loading = false
                 state.user = payload.payload
             })
@@ -45,13 +45,24 @@ export const authSlice = createSlice({
             .addCase(logout.pending, (state) => {
                 state.loading = true
             })
-            .addCase(logout.fulfilled, (state, payload) => {
+            .addCase(logout.fulfilled, (state) => {
                 state.user = null
                 state.loggedIn = false
                 state.loading = false
             })
             .addCase(logout.rejected, (state) => {
                 state.loading = false
+            })
+            .addCase(verify.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(verify.fulfilled, (state) => {
+                state.loading = true
+                state.isAuthenticated = true
+            })
+            .addCase(verify.rejected, (state) => {
+                state.loading = false
+                state.isAuthenticated = false
             })
     }
 })

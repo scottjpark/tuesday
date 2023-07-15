@@ -21,7 +21,7 @@ export function Login() {
     }
 
 
-    if (loggedIn) return <Navigate to='/loggedIn' />
+    if (loggedIn && !loading) return <Navigate to='/loggedIn' />
     return (
         <form id='auth'>
             <label>Username</label>
