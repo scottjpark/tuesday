@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .serializers import UserCreateSerializer, UserSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from django.conf import settings
+from django.http import HttpResponse
 
 class RegisterView(APIView):
     def post(self, request):
@@ -27,6 +28,12 @@ class RetrieveUserView(APIView):
 
         return Response(user.data, status=status.HTTP_200_OK)
     
+class ResetUserView(APIView):
+    def post(self, request):
+        response = HttpResponse('Logged out')
+        response.delete_cookie(key='refresh')
+        return response
+
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import InvalidToken
@@ -46,6 +53,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
         cookie_max_age = settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']
         response.set_cookie('refresh', response.data['refresh'], max_age=cookie_max_age, httponly=True )
         del response.data['refresh']
+
     return super().finalize_response(request, response, *args, **kwargs)
 
 class CookieTokenRefreshView(TokenRefreshView):
@@ -54,5 +62,6 @@ class CookieTokenRefreshView(TokenRefreshView):
             cookie_max_age = settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']
             response.set_cookie('refresh', response.data['refresh'], max_age=cookie_max_age, httponly=True )
             del response.data['refresh']
+
         return super().finalize_response(request, response, *args, **kwargs)
     serializer_class = CookieTokenRefreshSerializer

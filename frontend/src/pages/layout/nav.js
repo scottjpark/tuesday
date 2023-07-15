@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { logout } from '../../features/auth/authActions';
 
 export function NavBar() {
-    const [isAuth, setIsAuth] = useState(false);
 
-    useEffect(() => {
-        if (localStorage.getItem('access_token') !== null) {
-            setIsAuth(true);
-        }
-    }, [isAuth]);
+    const isAuth = useSelector(state => state.user.loggedIn)
+    const dispatch = useDispatch()
+
+    const handleClick = () => {
+        dispatch(logout())
+    }
 
     return (
         <div>
-            {isAuth ? 'Logout' : <Link to='/signup'>Register</Link>}
-            {isAuth ? 'Logout' : <Link to='/login'>Login</Link>}
+            {isAuth ? (<button onClick={handleClick}>Logout</button>) : (<div><Link to='/signup'>Register</Link> <Link to='/login'>Login</Link></div>)}
         </div>
     )
 }
