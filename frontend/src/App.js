@@ -21,14 +21,14 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <NavBar />
+        {/* <NavBar /> */}
         {loading ?
           <CircularProgress /> :
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/loggedIn' element={<LoggedIn />} />
             <Route path='/signup' element={<SignUp />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/loggedIn' element={<LoggedIn />} />
           </Routes>
         }
       </div>

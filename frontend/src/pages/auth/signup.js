@@ -25,33 +25,40 @@ export function SignUp() {
     if (loggedIn && !loading) return <Navigate to='/loggedIn' />
     return (
         <form id='auth'>
-            <label>Username</label>
-            <input
-                className='auth-input'
-                placeholder='Username'
-                name='username'
-                type='text'
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-            />
-            <label>Password</label>
-            <input
-                className='auth-input'
-                placeholder='Password'
-                name='password'
-                type='password'
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-            />
-            <label>Password</label>
-            <input
-                className='auth-input'
-                placeholder='email'
-                name='email'
-                type='email'
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-            />
+            <h1>Register</h1>
+            <div className='auth-fields'>
+                <label>Username</label>
+                <input
+                    className='auth-input'
+                    placeholder='Username'
+                    name='username'
+                    type='text'
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                />
+            </div>
+            <div className='auth-fields'>
+                <label>Password</label>
+                <input
+                    className='auth-input'
+                    placeholder='Password'
+                    name='password'
+                    type='password'
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+            </div>
+            <div className='auth-fields'>
+                <label>Email</label>
+                <input
+                    className='auth-input'
+                    placeholder='email'
+                    name='email'
+                    type='email'
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                />
+            </div>
             {loading ?
                 <CircularProgress /> :
                 <button type='submit' onClick={handleSubmit}>Submit</button>

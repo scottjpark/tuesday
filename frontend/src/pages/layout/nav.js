@@ -12,8 +12,8 @@ export function NavBar() {
     }
 
     return (
-        <div>
+        <nav>
             {isAuth ? (<button onClick={handleClick}>Logout</button>) : (<div><Link to='/signup'>Register</Link> <Link to='/login'>Login</Link></div>)}
-        </div>
+        </nav>
     )
 }
