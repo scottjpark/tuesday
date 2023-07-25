@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { register } from '../../features/auth/authActions';
 import { useSelector, useDispatch } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export function SignUp() {
@@ -61,8 +61,9 @@ export function SignUp() {
             </div>
             {loading ?
                 <CircularProgress /> :
-                <button type='submit' onClick={handleSubmit}>Submit</button>
+                <button type='submit' onClick={handleSubmit}>Register</button>
             }
+            <p className='auth-notes'>Already a member? <Link to='/login'>Log in</Link></p>
         </form>
     )
 }
