@@ -16,6 +16,7 @@ A planned collection of personal microservices
 
 - JWT Authentication: https://www.youtube.com/playlist?list=PLJRGQoqpRwdczZl-LndYIQ6ymybtUqT5G
 - Server-side httpOnly cookie workaround: https://github.com/jazzband/djangorestframework-simplejwt/issues/71#issuecomment-762927394
+- File Upload and Download in Django and React JS: https://www.youtube.com/watch?v=hVEkAkS-WKU
 
 ## Notes
 

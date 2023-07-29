@@ -9,7 +9,7 @@ export function SignUp() {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
 
-    const { loggedIn, loading } = useSelector(state => state.user)
+    const { loggedIn, loading } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const handleSubmit = async (e) => {

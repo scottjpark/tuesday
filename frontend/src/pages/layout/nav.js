@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom'
 
-export function LoggedIn() {
-    const { user, loggedIn } = useSelector(state => state.user)
+export function NavBar() {
+    const { user, loggedIn } = useSelector(state => state.auth)
 
     if (!loggedIn) return <Navigate to='/' />
 
@@ -10,10 +10,9 @@ export function LoggedIn() {
     const email = user.email
 
     return (
-        <>
-            You're logged In
-            <p>Username: {username}</p>
-            <p>Email: {email}</p>
-        </>
+        <nav id="navigation">
+
+
+        </nav>
     )
 }

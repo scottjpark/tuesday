@@ -34,3 +34,8 @@ class ResetUserView(APIView):
         response.delete_cookie(key='refresh')
         response.delete_cookie(key='access')
         return response
+
+class UserAvatarView(APIView):
+    def post(self, request):
+        print(request.FILES)
+        return Response(status=status.HTTP_202_ACCEPTED)
