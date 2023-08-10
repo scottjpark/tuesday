@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { uploadAvatar } from './userActions'
 
 const initialState = {
-    avatarURL: null
+    avatarURL: null,
+    loading: false,
 }
 export const userSlice = createSlice({
     name: 'user',
@@ -11,13 +12,15 @@ export const userSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(uploadAvatar.pending, (state) => {
-                console.log(state)
+                state.loading = true
             })
-            .addCase(uploadAvatar.fulfilled, (state) => {
-                console.log(state)
+            .addCase(uploadAvatar.fulfilled, (state, payload) => {
+                state.loading = false
+                state.avatarURL = payload.payload.profile_image
             })
-            .addCase(uploadAvatar.rejected, (state) => {
-                console.log(state)
+            .addCase(uploadAvatar.rejected, (state, payload) => {
+                state.loading = false
+                console.log(payload)
             })
     }
 })

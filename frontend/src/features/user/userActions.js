@@ -15,8 +15,8 @@ export const uploadAvatar = createAsyncThunk(
         const body = { profile_image: profileImage }
         try {
             const response = await axios.post('/api/users/avatar/', body, config)
-            if (response.status === 200) {
-                return { success: 'Profile picture set' }
+            if (response.status === 202) {
+                return response.data
             } else {
                 return { failure: 'Something went wrong' }
             }

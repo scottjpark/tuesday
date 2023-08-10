@@ -5,7 +5,10 @@ import { uploadAvatar } from '../../features/user/userActions'
 
 export function Profile() {
     const { user, loggedIn } = useSelector(state => state.auth)
+    const { avatarURL } = useSelector(state => state.user)
     const [selectedImage, setSelectedImage] = useState(null)
+
+    console.log(avatarURL)
 
     let username = ''
     let email = ''
@@ -27,6 +30,7 @@ export function Profile() {
     if (!loggedIn) return <Navigate to='/' />
     return (
         <>
+            <img src={avatarURL} alt="" />
             You're logged In
             <p>Username: {username}</p>
             <p>Email: {email}</p>

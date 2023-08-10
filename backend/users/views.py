@@ -1,10 +1,8 @@
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-from django.conf import settings
-from django.http import HttpResponse
 from django.core.files import File
+from django.http import HttpResponse
 from .forms import ProfileImageForm
 from .serializers import UserCreateSerializer, UserSerializer
 
@@ -45,7 +43,8 @@ class UserAvatarView(APIView):
         if form.is_valid():
             profile_image = form.cleaned_data['profile_image']
             user.profile_image.save(profile_image.name, File(profile_image))
-            return Response(status=status.HTTP_202_ACCEPTED)
+            user = UserSerializer(user)
+            return Response(data=user.data, status=status.HTTP_202_ACCEPTED)
         else:
             errors = form.errors
             return Response(data=errors, status=status.HTTP_400_BAD_REQUEST)
