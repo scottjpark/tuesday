@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { uploadAvatar } from './userActions'
+import { uploadAvatar, getAvatar } from './userActions'
 
 const initialState = {
-    avatarURL: null,
+    avatarURL: 'https://dmcfse5dawjc0.cloudfront.net/media/default.webp',
     loading: false,
 }
 export const userSlice = createSlice({
@@ -16,11 +16,12 @@ export const userSlice = createSlice({
             })
             .addCase(uploadAvatar.fulfilled, (state, payload) => {
                 state.loading = false
-                state.avatarURL = payload.payload.profile_image
             })
             .addCase(uploadAvatar.rejected, (state, payload) => {
                 state.loading = false
-                console.log(payload)
+            })
+            .addCase(getAvatar.fulfilled, (state, payload) => {
+                if (payload.payload.profile_image) state.avatarURL = payload.payload.profile_image
             })
     }
 })

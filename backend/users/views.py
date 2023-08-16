@@ -41,6 +41,7 @@ class UserAvatarView(APIView):
         user = request.user
         form = ProfileImageForm(request.POST, request.FILES)
         if form.is_valid():
+            user.profile_image.delete()
             profile_image = form.cleaned_data['profile_image']
             user.profile_image.save(profile_image.name, File(profile_image))
             user = UserSerializer(user)
@@ -48,3 +49,9 @@ class UserAvatarView(APIView):
         else:
             errors = form.errors
             return Response(data=errors, status=status.HTTP_400_BAD_REQUEST)
+
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request):
+        user = request.user
+        user = UserSerializer(user)
+        return Response(data=user.data, status=status.HTTP_200_OK)

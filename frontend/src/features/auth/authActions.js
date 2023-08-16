@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import cookie from 'cookie'
+import { getAvatar } from '../user/userActions'
 
 export const register = createAsyncThunk('/api/users/register/', async (userData, thunkAPI) => {
     const config = {
@@ -75,6 +76,10 @@ export const getUser = createAsyncThunk('/api/users/user/', async (access, thunk
     try {
         const response = await axios.get('/api/users/user/', config)
         if (response.status === 200) {
+
+            const { dispatch } = thunkAPI
+            dispatch(getAvatar(access))
+
             return response.data
         } else {
             return { failure: 'Something went wrong' }

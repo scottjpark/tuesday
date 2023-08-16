@@ -7,8 +7,7 @@ export function Profile() {
     const { user, loggedIn } = useSelector(state => state.auth)
     const { avatarURL } = useSelector(state => state.user)
     const [selectedImage, setSelectedImage] = useState(null)
-
-    console.log(avatarURL)
+    const [imageSizeError, setImageSizeError] = useState(null)
 
     let username = ''
     let email = ''
@@ -18,7 +17,14 @@ export function Profile() {
     }
 
     const handleImageChange = (e) => {
-        setSelectedImage(e.target.files[0])
+        if (e.target.files[0]) {
+            if (e.target.files[0].size > 5120000) {
+                setImageSizeError('File size is too large. Please select a file < 5 mb')
+            } else {
+                setSelectedImage(e.target.files[0])
+                setImageSizeError(null)
+            }
+        }
     }
 
     const dispatch = useDispatch()
@@ -26,6 +32,10 @@ export function Profile() {
         e.preventDefault()
         dispatch(uploadAvatar(selectedImage))
     }
+
+    const errorText = <p>
+        {imageSizeError}
+    </p>
 
     if (!loggedIn) return <Navigate to='/' />
     return (
@@ -37,8 +47,9 @@ export function Profile() {
 
             <form>
                 Upload
-                <input type="file" id="profile-image" accept="image/png, image/jpeg" onChange={handleImageChange} required />
-                <button onClick={handleImageSubmit}>Upload Image</button>
+                <input type="file" id="profile-image" accept="image/png, image/jpeg, image/webp, image/gif" onChange={handleImageChange} required />
+                <button onClick={handleImageSubmit} >Upload Image</button>
+                {imageSizeError ? errorText : ''}
             </form>
         </>
     )

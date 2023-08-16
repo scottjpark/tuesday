@@ -12,6 +12,13 @@ A planned collection of personal microservices
 - Password reset email
 - Signup by invite only
 
+### User Settings
+
+- ~~Ensure profile image is in fact, an image~~
+- ~~Set max image file size~~
+- Display errors
+  - Shows file size error
+
 ## Resources and Tutorials
 
 - JWT Authentication: https://www.youtube.com/playlist?list=PLJRGQoqpRwdczZl-LndYIQ6ymybtUqT5G
@@ -21,4 +28,3 @@ A planned collection of personal microservices
 ## Notes
 
 - Is there a need for the refresh token path?
-- Server-side handling of the cookies seem to be unnecessary, according to some research.
