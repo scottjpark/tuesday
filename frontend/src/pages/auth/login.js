@@ -21,37 +21,39 @@ export function Login() {
     }
 
 
-    if (loggedIn && !loading) return <Navigate to='/loggedIn' />
+    if (loggedIn && !loading) return <Navigate to='/' />
     return (
-        <form id='auth'>
-            <h1>Log In</h1>
-            <div className='auth-fields'>
-                <label>Username</label>
-                <input
-                    className='auth-input'
-                    placeholder='Username'
-                    name='username'
-                    type='text'
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                />
-            </div>
-            <div className='auth-fields'>
-                <label>Password</label>
-                <input
-                    className='auth-input'
-                    placeholder='Password'
-                    name='password'
-                    type='password'
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                />
-            </div>
-            {loading ?
-                <CircularProgress /> :
-                <button type='submit' onClick={handleSubmit}>Log In</button>
-            }
-            <p className='auth-notes'>Not a member? <Link to='/signup'>Sign up</Link></p>
-        </form>
+        <div id='out-main'>
+            <form id='auth'>
+                <h1>Log In</h1>
+                <div className='auth-fields'>
+                    <label>Username</label>
+                    <input
+                        className='auth-input'
+                        placeholder='Username'
+                        name='username'
+                        type='text'
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                    />
+                </div>
+                <div className='auth-fields'>
+                    <label>Password</label>
+                    <input
+                        className='auth-input'
+                        placeholder='Password'
+                        name='password'
+                        type='password'
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                    />
+                </div>
+                {loading ?
+                    <CircularProgress /> :
+                    <button type='submit' onClick={handleSubmit}>Log In</button>
+                }
+                <p className='auth-notes'>Not a member? <Link to='/signup'>Sign up</Link></p>
+            </form>
+        </div>
     )
 }

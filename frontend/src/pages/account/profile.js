@@ -37,7 +37,7 @@ export function Profile() {
         {imageSizeError}
     </p>
 
-    if (!loggedIn) return <Navigate to='/' />
+    if (!loggedIn) return <Navigate to='/private' />
     return (
         <>
             <img src={avatarURL} alt="" />
