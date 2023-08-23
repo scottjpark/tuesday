@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { uploadAvatar } from '../../features/user/userActions'
+import { FileButtons } from '../utils/utils'
+import "../../styles/profile.sass"
 
 export function Profile() {
     const { user, loggedIn } = useSelector(state => state.auth)
@@ -39,18 +41,28 @@ export function Profile() {
 
     if (!loggedIn) return <Navigate to='/private' />
     return (
-        <>
-            <img src={avatarURL} alt="" />
-            You're logged In
-            <p>Username: {username}</p>
-            <p>Email: {email}</p>
-
-            <form>
-                Upload
-                <input type="file" id="profile-image" accept="image/png, image/jpeg, image/webp, image/gif" onChange={handleImageChange} required />
-                <button onClick={handleImageSubmit} >Upload Image</button>
-                {imageSizeError ? errorText : ''}
-            </form>
-        </>
+        <article id="profile">
+            <div className="profile-image-set">
+                <img src={avatarURL} alt="profile_image" />
+                <form>
+                    <FileButtons
+                        onChangeHandler={handleImageChange}
+                        accepted={"image/png, image/jpeg, image/webp, image/gif"}
+                    />
+                    <button onClick={handleImageSubmit} >Submit</button>
+                    {imageSizeError ? errorText : ''}
+                </form>
+            </div>
+            <div className="user-info">
+                <div className="user-categories">
+                    <p>Username</p>
+                    <p>Email</p>
+                </div>
+                <div className="user-values">
+                    <p>{username}</p>
+                    <p>{email}</p>
+                </div>
+            </div>
+        </article>
     )
 }
