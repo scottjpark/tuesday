@@ -10,7 +10,6 @@ frontend/node_modules
 /coverage
 
 # production
-build
 
 # misc
 .vscode
