@@ -5,6 +5,7 @@ from django.core.files import File
 from django.http import HttpResponse
 from .forms import ProfileImageForm
 from .serializers import UserCreateSerializer, UserSerializer
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 class RegisterView(APIView):
     def post(self, request):
