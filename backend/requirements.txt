@@ -9,7 +9,8 @@ djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 jmespath==1.0.1
 Pillow==10.0.0
-psycopg==3.1.8
+# psycopg==3.1.8 ( dev only )
+psycopg2-binary==2.9.7
 PyJWT==2.6.0
 python-dateutil==2.8.2
 pytz==2023.3
