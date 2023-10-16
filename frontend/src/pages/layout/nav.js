@@ -1,12 +1,15 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
+import { logout } from '../../features/auth/authActions'
 
 export function NavBar() {
     const { user } = useSelector(state => state.auth)
     const { avatarURL } = useSelector(state => state.user)
 
-    const logout = () => {
-        console.log('logging out')
+    const dispatch = useDispatch()
+
+    const handleLogout = () => {
+        dispatch(logout())
     }
 
     return (
@@ -14,7 +17,7 @@ export function NavBar() {
             <img className='profile-image' src={avatarURL} alt={user.username} />
             <div className='nav-links'>
                 <Link to='/profile'>profile</Link>
-                <div id='logout' onClick={logout}>log out</div>
+                <div id='logout' onClick={handleLogout}>log out</div>
             </div>
         </nav>
     )
