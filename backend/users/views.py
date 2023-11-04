@@ -7,6 +7,7 @@ from .forms import ProfileImageForm
 from .serializers import UserCreateSerializer, UserSerializer
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+
 class RegisterView(APIView):
     def post(self, request):
         data = request.data
@@ -15,20 +16,23 @@ class RegisterView(APIView):
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
         user = serializer.create(serializer.validated_data)
         user = UserSerializer(user)
 
         return Response(user.data, status=status.HTTP_201_CREATED)
 
+
 class RetrieveUserView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         user = request.user
         user = UserSerializer(user)
 
         return Response(user.data, status=status.HTTP_200_OK)
-    
+
+
 class ResetUserView(APIView):
     def post(self, request):
         response = HttpResponse('Logged out')
@@ -36,8 +40,10 @@ class ResetUserView(APIView):
         response.delete_cookie(key='access')
         return response
 
+
 class UserAvatarView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request):
         user = request.user
         form = ProfileImageForm(request.POST, request.FILES)
@@ -52,6 +58,7 @@ class UserAvatarView(APIView):
             return Response(data=errors, status=status.HTTP_400_BAD_REQUEST)
 
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         user = request.user
         user = UserSerializer(user)

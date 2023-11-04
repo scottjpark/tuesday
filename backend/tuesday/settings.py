@@ -28,12 +28,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'curation',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = [
+    "https://twitter.com",
+    "https://x.com",
+]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

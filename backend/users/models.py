@@ -36,6 +36,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255)
     is_staff = models.BooleanField(default=False)
     profile_image = models.ImageField(upload_to='media/profile_image/', null=True)
+    twitter_username = models.CharField(max_length=255, unique=True, default='')
     
     objects = UserAccountManager()
 
