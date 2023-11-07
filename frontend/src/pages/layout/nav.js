@@ -16,8 +16,11 @@ export function NavBar() {
         <nav>
             <img className='profile-image' src={avatarURL} alt={user.username} />
             <div className='nav-links'>
-                <Link to='/profile'>profile</Link>
-                <div id='logout' onClick={handleLogout}>log out</div>
+                <ul>
+                    <li><Link to='/profile'>profile</Link></li>
+                    <li><Link to='/curation'>curation</Link></li>
+                    <li><div id='logout' onClick={handleLogout}>log out</div></li>
+                </ul>
             </div>
         </nav>
     )

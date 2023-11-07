@@ -34,6 +34,7 @@ export const login = createAsyncThunk('/api/users/token/', async (userData, thun
     }
     try {
         const response = await axios.post('/api/users/token/', userData, config)
+        console.log(userData)
         if (response.status === 200) {
             const access = response.data.access
             document.cookie = cookie.serialize('access', response.data.access)

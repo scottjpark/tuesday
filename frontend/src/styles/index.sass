@@ -121,22 +121,28 @@
                     background-color: white
 
                 .nav-links
-                    margin-top: 20px
-                    margin-right: 10px
-                    font-size: 1.1em
-                    color: $theme-red
-
-                    a
+                    ul
+                        display: flex
+                        flex-direction: column
+                        align-items: flex-end
+                        margin-top: 20px
+                        margin-right: 10px
+                        font-size: 1.1em
                         color: $theme-red
-                        text-decoration: none
-                        &:hover
-                            color: $theme-red
 
-                    #logout
-                        margin-top: 5px
-                        cursor: pointer
-                        &:hover
-                            color: $theme-red
+                        li
+                            margin: 2px
+
+                            a
+                                color: $theme-red
+                                text-decoration: none
+                                &:hover
+                                    color: $theme-red
+
+                            #logout
+                                cursor: pointer
+                                &:hover
+                                    color: $theme-red
 
             main
                 height: 100%

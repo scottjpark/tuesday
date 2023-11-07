@@ -11,4 +11,5 @@ urlpatterns = [
     re_path(r"^(?!api/).*", render_react),
     path('api/admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
+    path('api/curation/', include('curation.urls')),
 ]

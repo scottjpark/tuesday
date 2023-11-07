@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { NavBar } from './nav'
 import { Profile } from '../account/profile'
 import { Home } from '../home/home'
+import { Curate } from '../curation/curate'
 
 import CircularProgress from '@mui/material/CircularProgress'
 
@@ -25,6 +26,7 @@ export function MainWrapper() {
                         <Routes>
                             <Route path='/' element={<Home />} />
                             <Route path='/profile' element={<Profile />} />
+                            <Route path='/curation' element={<Curate />} />
                         </Routes>
                     </main>
                 }
