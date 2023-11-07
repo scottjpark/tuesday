@@ -37,3 +37,8 @@ Checklists:
 
 1. Install Railway CLI (https://docs.railway.app/develop/cli).
 2. Run 'railway up' in the terminal.
+
+Making migrations:
+
+- railway run python backend/manage.py makemigrations <-- This appears to be automatic?
+- railway run python backend/manage.py migrate
