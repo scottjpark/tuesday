@@ -61,4 +61,4 @@ class CuratedImageView(APIView):
                 display_name=display_name)
             curated_image.display_name.add(display_name)
 
-        return Response('Saved', status=status.HTTP_201_CREATED)
+        return Response('Image saved successfully', status=status.HTTP_201_CREATED)

@@ -27,4 +27,13 @@ A planned collection of personal microservices
 
 ## Notes
 
-- Is there a need for the refresh token path?
+### Deploying to Prod
+
+Checklists:
+
+- Commit/Merge latest changes.
+- Ensure requirements.txt is up to date.
+- If changes were made in the frontend, run 'npm build' in the frontend.
+
+1. Install Railway CLI (https://docs.railway.app/develop/cli).
+2. Run 'railway up' in the terminal.
