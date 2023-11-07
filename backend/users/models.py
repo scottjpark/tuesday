@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
+
 class UserAccountManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not email:
@@ -10,9 +11,9 @@ class UserAccountManager(BaseUserManager):
 
         user = self.model(
             email=email,
-            username = username,
+            username=username,
         )
-        
+
         user.set_password(password)
         user.save(using=self._db)
 
@@ -30,14 +31,15 @@ class UserAccountManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
-    
+
+
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=255)
     is_staff = models.BooleanField(default=False)
-    profile_image = models.ImageField(upload_to='media/profile_image/', null=True)
-    twitter_username = models.CharField(max_length=255, unique=True, default='')
-    
+    profile_image = models.ImageField(
+        upload_to='media/profile_image/', null=True)
+
     objects = UserAccountManager()
 
     USERNAME_FIELD = 'username'

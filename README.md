@@ -40,5 +40,5 @@ Checklists:
 
 Making migrations:
 
-- railway run python backend/manage.py makemigrations <-- This appears to be automatic?
+- railway run python backend/manage.py makemigrations <-- This shouldn't be needed, as it should have been on the commit
 - railway run python backend/manage.py migrate

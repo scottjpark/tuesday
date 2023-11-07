@@ -52,7 +52,6 @@ export function Login() {
                     <CircularProgress /> :
                     <button type='submit' onClick={handleSubmit}>Log In</button>
                 }
-                <p className='auth-notes'>Not a member? <Link to='/signup'>Sign up</Link></p>
             </form>
         </div>
     )
