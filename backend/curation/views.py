@@ -5,6 +5,7 @@ from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import CuratedImage, Tag, Artist, DisplayName
+from .serializers import ImageSerializer
 
 from django.core.files.base import ContentFile
 
@@ -25,7 +26,7 @@ def download_image_from_url(url):
     return None
 
 
-class CuratedImageView(APIView):
+class SaveImageView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
@@ -37,13 +38,22 @@ class CuratedImageView(APIView):
         artist_nickname = data['displayName']
         tweet_url = data['tweetURL']
         image_urls = data['urls']
-        nsfw = data['nsfw']
-        private = data['private']
+
+        # Temporary assignments until the new extension release
+        if 'nsfw' in data.keys():
+            nsfw = data['nsfw']
+        else:
+            nsfw = True
+
+        if 'private' in data.keys():
+            private = data['private']
+        else:
+            private = True
 
         for image_url in image_urls:
             image_file = download_image_from_url(image_url)
             curated_image = CuratedImage.objects.create(
-                image=image_file, user=user, tweet_url=tweet_url)
+                image=image_file, user=user, tweet_url=tweet_url, nsfw=nsfw, private=private)
 
             for tag in image_tags:
                 image_tag = tag.lower()
@@ -64,3 +74,22 @@ class CuratedImageView(APIView):
             curated_image.display_name.add(display_name)
 
         return Response('Image saved successfully', status=status.HTTP_201_CREATED)
+
+
+class CuratedImagesView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        data = request.data
+
+        nsfw = data.get('nsfw')
+        search_keys = data.get('search')
+        mine_only = data.get('mine_only')
+
+        images = CuratedImage.objects.filter(user=user)
+        response_data = images
+
+        print(response_data)
+
+        return Response(response_data, status=status.HTTP_200_OK)
