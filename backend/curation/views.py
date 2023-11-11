@@ -37,6 +37,8 @@ class CuratedImageView(APIView):
         artist_nickname = data['displayName']
         tweet_url = data['tweetURL']
         image_urls = data['urls']
+        nsfw = data['nsfw']
+        private = data['private']
 
         for image_url in image_urls:
             image_file = download_image_from_url(image_url)

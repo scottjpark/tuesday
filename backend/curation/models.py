@@ -22,3 +22,5 @@ class CuratedImage(models.Model):
     display_name = models.ManyToManyField(DisplayName)
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, null=False)
     tweet_url = models.CharField(max_length=255, null=True, unique=False)
+    private = models.BooleanField(default=True)
+    nsfw = models.BooleanField(default=True)
