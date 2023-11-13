@@ -88,7 +88,8 @@ class CuratedImagesView(APIView):
         mine_only = data.get('mine_only')
 
         images = CuratedImage.objects.filter(user=user)
-        response_data = images
+        serializer = ImageSerializer(images, many=True)
+        response_data = serializer.data
 
         print(response_data)
 
