@@ -1,15 +1,14 @@
 @import "./_utils"
 
 #root
+    position: relative
     font-family: 'Lato'
     display: flex
     justify-content: center
     align-items: center
-    min-height: 100%
-    background-color: $background
+    height: 100%
 
     .App
-        background-color: white
         width: 100%
         height: 100%
         display: flex
@@ -22,7 +21,7 @@
             align-items: center
             width: 100%
             height: 100vh
-            background-color: $background
+            background-color: white
 
             #auth
                 background-color: white
@@ -34,6 +33,7 @@
                 border: 1px solid #708eb5
                 padding: 20px
                 border-radius: 7px
+                box-shadow: 0px 1px 2px 2px rgba(198, 198, 198, 1)
 
                 h1
                     font-family: $font-title
@@ -80,69 +80,66 @@
         .topbar
             background-color: $theme-red
             width: 100%
-            height: 4em
+            height: 5em
             display: flex
-            justify-content: center
+            justify-content: space-between
             align-items: center
-            box-shadow: 0 1px 3px
+            box-shadow: 0px 1px 2px 1px #686868
+            z-index: 3
+            position: relative
 
             h1
-                margin-left: 10px
+                margin-left: 50px
                 color: white
                 font-family: $font-title
                 font-size: 2em
                 font-weight: bold
 
-        .main-wrapper
-            display: flex
-            width: 1400px
-
-            nav
-                margin-top: 20px
-                padding-bottom: 40px
-                width: 20%
-                min-width: 200px
-                height: 80%
+            .user-display
+                margin-right: 50px
                 display: flex
-                flex-direction: column
-                justify-content: flex-start
-                align-items: flex-end
-                border-right-style: solid
-                border-color: $theme-red
-                border-width: 1px
+                justify-content: space-between
+                align-items: center
+                background-color: white
+                height: 2em
+                border-radius: 2em
 
                 .profile-image
-                    margin-top: 30px
-                    margin-right: 10px
-                    width: 70px
-                    border-style: double
-                    border-width: 3px
-                    border-color: gray
-                    background-color: white
+                    margin: 0px 3px 0px 15px
+                    height: 2em
+                    border-radius: 50%
 
-                .nav-links
-                    ul
-                        display: flex
-                        flex-direction: column
-                        align-items: flex-end
-                        margin-top: 20px
-                        margin-right: 10px
-                        font-size: 1.1em
-                        color: $theme-red
+                #logout-link
+                    margin: 0px 20px 0px 3px
+                    color: $theme-red
+                    font-size: 0.9em
+                    font-weight: bold
+                    &:hover
+                        text-decoration: underline
 
-                        li
-                            margin: 2px
+        nav
+            height: 2.5em
+            width: 100%
+            background-color: white
+            box-shadow: 0px 2px 2px 1px #bdbdbd
+            z-index: 2
+            position: relative
 
-                            a
-                                color: $theme-red
-                                text-decoration: none
-                                &:hover
-                                    color: $theme-red
+            .nav-links
+                height: 100%
+                display: flex
+                justify-content: space-around
+                align-items: center
 
-                            #logout
-                                cursor: pointer
-                                &:hover
-                                    color: $theme-red
+                .nav-block
+                    a
+                        text-decoration: none
+
+        .main-wrapper
+            background-color: $background
+            display: flex
+            width: 100%
+            height: 100%
 
             main
                 height: 100%

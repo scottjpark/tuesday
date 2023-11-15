@@ -1,7 +1,7 @@
 export function Curate() {
     return (
         <div id="curate">
-            Curation
+            blaaaaah
         </div>
     )
 }

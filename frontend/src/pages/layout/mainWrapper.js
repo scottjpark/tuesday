@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
+import { TopBar } from './top'
 import { NavBar } from './nav'
 import { Profile } from '../account/profile'
 import { Home } from '../home/home'
@@ -15,16 +16,15 @@ export function MainWrapper() {
 
     return (
         <>
-            <div className='topbar'>
-                <h1>raphire.net</h1>
-            </div>
+            <TopBar />
+            <NavBar />
             <div className="main-wrapper">
-                <NavBar />
                 {loading ?
                     <CircularProgress /> :
                     <main>
                         <Routes>
                             <Route path='/' element={<Home />} />
+                            <Route path='/home' element={<Home />} />
                             <Route path='/profile' element={<Profile />} />
                             <Route path='/curation' element={<Curate />} />
                         </Routes>
