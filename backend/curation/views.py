@@ -87,10 +87,14 @@ class CuratedImagesView(APIView):
         search_keys = data.get('search')
         mine_only = data.get('mine_only')
 
-        images = CuratedImage.objects.filter(user=user)
+        # return only needed image data
+        offset = int(request.GET.get('offset', 0))
+        offset_start = offset * 20
+        offset_end = (offset * 20) + 20
+
+        images = CuratedImage.objects.filter(
+            user=user).order_by('-id')[offset_start:offset_end]
         serializer = ImageSerializer(images, many=True)
         response_data = serializer.data
-
-        print(response_data)
 
         return Response(response_data, status=status.HTTP_200_OK)
