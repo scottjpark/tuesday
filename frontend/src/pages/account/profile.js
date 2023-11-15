@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { uploadAvatar } from '../../features/user/userActions'
 import { FileButtons } from '../utils/utils'
-import "../../styles/profile.sass"
 
 export function Profile() {
     const { user, loggedIn } = useSelector(state => state.auth)

@@ -5,6 +5,7 @@ const initialState = {
     avatarURL: 'https://dmcfse5dawjc0.cloudfront.net/media/default.webp',
     loading: false,
 }
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
