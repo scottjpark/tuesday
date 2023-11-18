@@ -39,6 +39,9 @@
                 height: 100%
                 width: 100%
                 background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,1) 100%)
+            &:hover
+                .image-details
+                    display: flex
 
                 .image-details-upper
                     padding: 10px 0px 10px 0px
@@ -61,7 +64,10 @@
                             margin: 0 5px 0 5px
 
                 .image-details-lower
-                    padding: 5px
+                    display: flex
+                    justify-content: space-between
+                    align-items: flex-end
+                    width: 100%
 
                     .tag-container
                         display: flex
@@ -78,6 +84,77 @@
                             background-color: #5bcc0f
                             border-radius: 3px
 
-            &:hover
-                .image-details
-                    display: flex
+                    .status-container
+                        padding: 5px 5px 5px 5px
+                        svg
+                            color: #808080
+                            font-size: 1.2em
+
+    .curated-modal-image-container
+        position: fixed
+        top: 30px
+        z-index: 4
+        display: flex
+        flex-direction: row
+        align-items: flex-start
+        padding: 15px
+        background-color: white
+
+        img
+            max-height: 90vh
+
+        .curated-modal-details-container
+            max-height: 90vh
+            min-width: 40vh
+
+            .source-container
+                display: flex
+                justify-content: space-between
+                align-items: center
+                padding: 0px 5px
+
+                p
+                    font-size: 0.8em
+                    font-weight: bold
+                    color: black
+                    margin: 0 5px 0 5px
+
+                .twitter-icon
+                    width: 25px
+                    border-radius: 50%
+                    margin: 0 5px 0 5px
+
+            .tag-container
+                display: flex
+                justify-content: flex-start
+                padding: 5px 5px 5px 5px
+
+                p
+                    font-size: 0.9em
+                    font-weight: bold
+                    color: black
+                    margin: 1px 5px 0 5px
+
+                .tag-name
+                    height: 1em
+                    font-size: 0.8em
+                    font-weight: bold
+                    color: white
+                    // padding: 2px 5px 2px 5px
+                    // margin: 0px 2px 2px 2px
+                    background-color: #5bcc0f
+                    border-radius: 3px
+                    svg
+                        font-size: 0.8em
+                        padding: 1px 0px 0px 1px
+
+                .status-container
+                    padding: 5px 5px 5px 5px
+
+    .curated-modal-background
+        position: fixed
+        top: 0
+        z-index: 3
+        width: 100%
+        height: 100%
+        background-color: rgba(0, 0, 0, 0.7)

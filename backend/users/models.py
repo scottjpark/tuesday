@@ -19,7 +19,7 @@ class UserAccountManager(BaseUserManager):
 
         return user
 
-    def create_useruser(self, username, email, password=None):
+    def create_superuser(self, username, email, password=None):
         user = self.create_user(
             email,
             username,
