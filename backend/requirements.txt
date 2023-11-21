@@ -14,12 +14,13 @@ idna==3.4
 jmespath==1.0.1
 packaging==23.1
 Pillow==10.0.0
-psycopg2-binary==2.9.7
+psycopg2-binary==2.9.9
 PyJWT==2.6.0
 python-dateutil==2.8.2
 pytz==2023.3
 requests==2.31.0
 s3transfer==0.6.1
+setuptools==69.0.1
 six==1.16.0
 sqlparse==0.4.3
 typing_extensions==4.5.0
