@@ -60,7 +60,9 @@ class SaveImageView(APIView):
                 if image_tag[0] == '#':
                     image_tag = image_tag[1:]
                 image_tag, created = Tag.objects.get_or_create(
-                    tag_name=image_tag.lower())
+                    tag_name=image_tag.lower(),
+                    tagged_by=user
+                )
                 curated_image.tags.add(image_tag)
 
             artist_handle = artist.lower()
@@ -78,7 +80,6 @@ class SaveImageView(APIView):
 
 class CuratedImagesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
     def get(self, request):
         user = request.user
         data = request.data
@@ -89,12 +90,46 @@ class CuratedImagesView(APIView):
 
         # return only needed image data
         offset = int(request.GET.get('offset', 0))
-        offset_start = offset * 20
-        offset_end = (offset * 20) + 20
+        offset_start = offset * 30
+        offset_end = (offset * 30) + 30
 
         images = CuratedImage.objects.filter(
             user=user).order_by('-id')[offset_start:offset_end]
         serializer = ImageSerializer(images, many=True)
+        response_data = serializer.data
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+class UpdateImageView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def patch(self, request):
+        user = request.user
+        data = request.data
+
+        image_id = data['id']
+        added_tags = data['tagAdd']
+        nsfw = data['nsfw']
+        private_image = data['privateImage']
+        removed_tags = data['tagRemove']
+        removed_tag_names = [_["tag_name"] for _ in removed_tags]
+
+        image = CuratedImage.objects.get(id=image_id)
+
+        tags_to_add = [_ for _ in added_tags if _ not in removed_tag_names]
+        for tag_name in tags_to_add:
+            new_tag, created = Tag.objects.get_or_create(tag_name=tag_name.lower(), tagged_by=user)
+            image.tags.add(new_tag)
+        
+        tags_to_remove = [_ for _ in removed_tags if _["tag_name"] not in added_tags]
+        for tag in tags_to_remove:
+            old_tag = Tag.objects.get(id=tag["id"])
+            image.tags.remove(old_tag)
+
+        image.nsfw = nsfw
+        image.private = private_image
+
+        image.save()
+        serializer = ImageSerializer(image)
         response_data = serializer.data
 
         return Response(response_data, status=status.HTTP_200_OK)
