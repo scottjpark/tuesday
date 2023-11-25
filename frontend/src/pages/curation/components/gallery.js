@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { CuratedImageModal } from './imageModal'
+import { CuratedImageModal } from './galleryComponents/imageContainerComponents/imageModal'
 
 import CircularProgress from '@mui/material/CircularProgress'
 
 import { loadImages } from '../../../features/curation/curationActions';
-import { ImageContainer } from './imageContainer';
+import { ImageContainer } from './galleryComponents/imageContainer';
 
 export function CurationGallery() {
+    const { images, loading } = useSelector(state => state.curation)
+    const [ displayImages, setDisplayImages ] = useState([])
+
     const dispatch = useDispatch()
-    const getCuratedImages = () => {
+    useEffect(() => {
         dispatch(loadImages(0))
-    }
+    }, [dispatch]);
 
     useEffect(() => {
-        getCuratedImages();
-    }, []);
-
-    const { images, loading } = useSelector(state => state.curation)
+        setDisplayImages(images)
+    }, [images])
 
     // Handles the display of image modal
     const [modalDisplay, setModalDisplay] = useState(false)
@@ -31,12 +32,14 @@ export function CurationGallery() {
             }
             {
                 loading ?
-                    <CircularProgress /> :
-                    <div className="curation-display">
-                        {images.map(image => {
-                            return (<ImageContainer key={image.id} data={{ image, setModalDisplay, setModalImage }} />)
-                        })}
-                    </div>
+                <CircularProgress /> :
+                <div className="curation-display">
+                {
+                    displayImages.map(image => {
+                        return <ImageContainer key={image.id} data={{ image, setModalDisplay, setModalImage }} />
+                    })
+                }
+                </div>
             }
         </>
     )

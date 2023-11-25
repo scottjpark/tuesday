@@ -1,5 +1,8 @@
 import { useRef } from 'react'
 
+import { alpha, styled } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
+
 export const FileButtons = (props) => {
     const onChangeHandler = props.onChangeHandler
     const accept = props.accepted
@@ -25,3 +28,15 @@ export const FileButtons = (props) => {
         </>
     )
 }
+
+export const RedSwitch = styled(Switch)(({ theme }) => ({
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      color: '#c70000',
+      '&:hover': {
+        backgroundColor: alpha('#c70000', theme.palette.action.hoverOpacity),
+      },
+    },
+    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+      backgroundColor: '#c70000',
+    },
+  }));
