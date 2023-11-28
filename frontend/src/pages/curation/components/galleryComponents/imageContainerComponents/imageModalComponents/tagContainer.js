@@ -4,7 +4,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 export function TagContainer(data) {
   const { tags, stagedChanges, setStagedChanges, setTags } = data.data
-  const [tagTextInput, setTagTextInput] = useState('') 
+  const [tagTextInput, setTagTextInput] = useState('')
 
   const { user } = useSelector(state => state.auth)
   const myTags = []
