@@ -13,7 +13,16 @@ from django.core.files.base import ContentFile
 def download_image_from_url(url):
     response = requests.get(url)
     if response.status_code == 200:
-        url = url.replace('name=small', 'name=large')
+        # Removes twitter downscaling
+        split_url = '&'.split(url)
+        new_url = []
+        for url_part in split_url:
+            if 'name=' in url_part:
+                new_url.append('name=4096x4096')
+            else:
+                new_url.append(url_part)
+        url = '&'.join(new_url)
+
         parsed_url = urlparse(url)
         query_params = parse_qs(parsed_url.query)
         format_value = query_params.get('format', ['jpg'])[0]
