@@ -9,7 +9,7 @@ import { ImageContainer } from './galleryComponents/imageContainer';
 
 export function CurationGallery() {
     const { images, loading } = useSelector(state => state.curation)
-    const [ displayImages, setDisplayImages ] = useState([])
+    const [displayImages, setDisplayImages] = useState([])
 
     const dispatch = useDispatch()
     useEffect(() => {
@@ -32,14 +32,14 @@ export function CurationGallery() {
             }
             {
                 loading ?
-                <CircularProgress /> :
-                <div className="curation-display">
-                {
-                    displayImages.map(image => {
-                        return <ImageContainer key={image.id} data={{ image, setModalDisplay, setModalImage }} />
-                    })
-                }
-                </div>
+                    <CircularProgress /> :
+                    <div className="curation-display">
+                        {
+                            displayImages.map(image => {
+                                return <ImageContainer key={image.id} data={{ image, setModalDisplay, setModalImage }} />
+                            })
+                        }
+                    </div>
             }
         </>
     )

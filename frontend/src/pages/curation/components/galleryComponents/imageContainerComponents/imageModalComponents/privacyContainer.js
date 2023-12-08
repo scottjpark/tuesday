@@ -1,4 +1,3 @@
-import Switch from '@mui/material/Switch';
 import { RedSwitch } from '../../../../../utils/utils'
 import LockOpenIcon from "@mui/icons-material/LockOpen"
 import LockIcon from "@mui/icons-material/Lock"
@@ -24,7 +23,7 @@ export function PrivacyContainer(data) {
         const newStagedChanges = stagedChanges
         newStagedChanges["privateImage"] = !privateImage
         newStagedChanges["changed"] = true
-        
+
         setPrivateImage(() => !privateImage)
         setStagedChanges(newStagedChanges)
     }
@@ -32,23 +31,21 @@ export function PrivacyContainer(data) {
     return (
         <div className="status-container">
             <div className="nsfw-container">
-                <p>NSFW</p> 
-                <RedSwitch 
+                <p>NSFW</p>
+                <RedSwitch
                     checked={nsfw}
                     onChange={handleNSFWChange}
-                /> 
+                />
                 {nsfwIcon}
             </div>
             <div className="privacy-container">
-                <p>Private to me</p> 
-                <RedSwitch 
+                <p>Private to me</p>
+                <RedSwitch
                     checked={privateImage}
                     onChange={handlePrivacyChange}
-                /> 
+                />
                 {privacyIcon}
             </div>
-
-            
         </div>
     );
 }
