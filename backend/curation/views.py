@@ -14,7 +14,7 @@ def download_image_from_url(url):
     response = requests.get(url)
     if response.status_code == 200:
         # Removes twitter downscaling
-        split_url = '&'.split(url)
+        split_url = url.split('&')
         new_url = []
         for url_part in split_url:
             if 'name=' in url_part:
