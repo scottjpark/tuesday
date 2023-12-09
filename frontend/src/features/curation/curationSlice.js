@@ -21,7 +21,6 @@ export const curationSlice = createSlice({
             .addCase(loadImages.fulfilled, (state, payload) => {
                 state.loading = false
                 state.images = payload.payload.data
-                console.log(state.images)
             })
             .addCase(loadImages.rejected, (state) => {
                 state.loading = false
