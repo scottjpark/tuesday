@@ -48,3 +48,27 @@ export const updateImage = createAsyncThunk(
         }
     }
 )
+
+export const deleteImage = createAsyncThunk(
+    'curation/imagedelete',
+    async (imageId, thunkAPI) => {
+        const { access } = cookie.parse(document.cookie, 'access')
+        const config = {
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${access}`
+            }
+        }
+        try {
+            const response = await axios.delete(`/api/curation/curated_image_delete/${imageId}`, config)
+            if (response.status === 200) {
+                return { success: 'Successfully Updated', data: response.data }
+            } else {
+                return { failure: 'Something went wrong' }
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data)
+        }
+    }
+)

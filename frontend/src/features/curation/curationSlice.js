@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loadImages } from './curationActions'
-import { updateImage } from './curationActions'
+import { loadImages, updateImage, deleteImage } from './curationActions'
 
 const initialState = {
     offset: 0,
@@ -39,6 +38,21 @@ export const curationSlice = createSlice({
                 state.imageDetailLoading = false
             })
             .addCase(updateImage.rejected, (state) => {
+                state.imageDetailLoading = false
+            })
+            .addCase(deleteImage.fulfilled, (state, payload) => {
+                state.loading = false
+                const imageID = payload.payload.data.deleted_image_id[0]
+                const newImages = state.images.filter((image) => {
+                    return image.id !== imageID
+                })
+                state.images = newImages
+                state.imageDetailLoading = false
+            })
+            .addCase(deleteImage.pending, (state) => {
+                state.imageDetailLoading = true
+            })
+            .addCase(deleteImage.rejected, (state) => {
                 state.imageDetailLoading = false
             })
     }

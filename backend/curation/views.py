@@ -11,18 +11,18 @@ from django.core.files.base import ContentFile
 
 
 def download_image_from_url(url):
+    # Removes twitter downscaling
+    split_url = url.split('&')
+    new_url = []
+    for url_part in split_url:
+        if 'name=' in url_part:
+            new_url.append('name=4096x4096')
+        else:
+            new_url.append(url_part)
+    url = '&'.join(new_url)
+
     response = requests.get(url)
     if response.status_code == 200:
-        # Removes twitter downscaling
-        split_url = url.split('&')
-        new_url = []
-        for url_part in split_url:
-            if 'name=' in url_part:
-                new_url.append('name=4096x4096')
-            else:
-                new_url.append(url_part)
-        url = '&'.join(new_url)
-
         parsed_url = urlparse(url)
         query_params = parse_qs(parsed_url.query)
         format_value = query_params.get('format', ['jpg'])[0]
@@ -40,6 +40,7 @@ class SaveImageView(APIView):
 
     def post(self, request):
         data = request.data
+        print(data)
 
         user = request.user
         image_tags = data['tags']
@@ -142,3 +143,14 @@ class UpdateImageView(APIView):
         response_data = serializer.data
 
         return Response(response_data, status=status.HTTP_200_OK)
+    
+class DeleteImageView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    def delete(self, request, image_id):
+        user = request.user
+        image = CuratedImage.objects.get(id=image_id)
+        if user == image.user:
+            image.delete()
+            return Response({'deleted_image_id': {image_id}, 'msg': 'Image Deleted'}, status=status.HTTP_200_OK)
+        else:
+            return Response('Invalid User', status=status.HTTP_403_FORBIDDEN)

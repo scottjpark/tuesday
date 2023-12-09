@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { updateImage } from '../../../../../features/curation/curationActions'
+import { updateImage, deleteImage } from '../../../../../features/curation/curationActions'
 
 import { SourceContainer } from './imageModalComponents/sourceContainer'
 import { TagContainer } from './imageModalComponents/tagContainer'
 import { PrivacyContainer } from './imageModalComponents/privacyContainer'
 
 import CircularProgress from '@mui/material/CircularProgress'
-
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export function CuratedImageModal(data) {
   const handleClose = () => {
@@ -54,6 +54,12 @@ export function CuratedImageModal(data) {
     setStagedChanges(() => emptyStagedChanges)
   }
 
+  const deleteImageForever = () => {
+    dispatch(deleteImage(id)).then(() => {
+      handleClose()
+    })
+  }
+
   return (
     <>
       <div className="curated-modal-image-container">
@@ -81,6 +87,7 @@ export function CuratedImageModal(data) {
             savedBy &&
             <div className="curated-modal-details-credits">
               <p>Image saved by {savedBy}</p>
+              <DeleteForeverIcon onClick={deleteImageForever} />
             </div>
           }
         </div>
