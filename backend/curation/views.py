@@ -6,9 +6,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import CuratedImage, Tag, Artist, DisplayName
 from .serializers import ImageSerializer
-
 from django.core.files.base import ContentFile
-
+from django.db.models import Q
 
 def download_image_from_url(url):
     # Removes twitter downscaling
@@ -40,8 +39,6 @@ class SaveImageView(APIView):
 
     def post(self, request):
         data = request.data
-        print(data)
-
         user = request.user
         image_tags = data['tags']
         artist = data['name']
@@ -94,21 +91,32 @@ class CuratedImagesView(APIView):
         user = request.user
         data = request.data
 
-        nsfw = data.get('nsfw')
         search_keys = data.get('search')
-        mine_only = data.get('mine_only')
+        view_nsfw = user.view_nsfw
+        view_private = user.view_private
 
         # return only needed image data
         offset = int(request.GET.get('offset', 0))
         offset_start = offset * 30
         offset_end = (offset * 30) + 30
 
-        images = CuratedImage.objects.filter(
-            user=user).order_by('-id')[offset_start:offset_end]
+        def _get_query_filter():
+            if view_nsfw and view_private:           # only want to see my images, regardless of NSFW
+                return Q(user=user)
+            elif not view_nsfw and view_private:     # only want to see my images, SFW only
+                return Q(nsfw=False, user=user)
+            elif view_nsfw and not view_private:     # I want to see all public images, as well as my own private images, regardless of NSFW, 
+                return (Q(private=False) | Q(user=user))
+            elif not view_nsfw and not view_private: # I want to see all public images, as well as my own private images, SFW only
+                return (Q(nsfw=False, private=False) | Q(nsfw=False, user=user))
+
+        images = CuratedImage.objects.filter(_get_query_filter()).order_by('-id')[offset_start:offset_end]
+        has_more_data = CuratedImage.objects.filter(_get_query_filter()).count() > offset_end
+
         serializer = ImageSerializer(images, many=True)
         response_data = serializer.data
 
-        return Response(response_data, status=status.HTTP_200_OK)
+        return Response({'images': response_data, 'more': has_more_data}, status=status.HTTP_200_OK)
 
 class UpdateImageView(APIView):
     permission_classes = [permissions.IsAuthenticated]

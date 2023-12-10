@@ -7,25 +7,70 @@
     justify-content: flex-start
 
     .curation-search
-        background-color: white
-        margin: 10px
+        background-color: $theme-red
+        margin: 0px 10px
         width: 80%
+        display: flex
+        justify-content: space-between
+        align-items: center
+        box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.3)
+        -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.3)
+        -moz-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.4)
+
+        #curation-searchbar-wrapper
+            display: flex
+            justify-content: flex-start
+            width: calc(100% - 200px)
+
+            #curation-searchbar
+                margin: 10px 0px 10px 10px
+                height: 1.8em
+                border: 1px none white
+                border-radius: 3px 0px 0px 3px
+                box-shadow: inset 0px 0px 2px 1px rgba(0,0,0,0.3)
+                width: calc(100% - 1.8em)
+
+            #curation-searchicon
+                margin: 10px 0px 0px 0px
+                height: calc(1.8em - 3px)
+                width: 1.8em
+                background-color: #eee
+                border-radius: 0px 3px 3px 0px
+                box-shadow: inset 0px 0px 2px 1px rgba(0,0,0,0.3)
+                cursor: pointer
+        
+        #curation-search-options-wrapper
+            display: flex
+            justify-content: center
+            align-items: center
+            width: 190px
+            margin: 0px 10px 0px 10px
+            background-color: $theme-faded-red
+            height: calc(1.8em - 2px)
+            border: 1px none $theme-faded-red
+            border-radius: 3px
+
+            p
+                color: $theme-red
+                font-weight: bold
+                font-size: 0.7em
 
     .curation-display
         margin: 10px
         width: 80%
         display: flex
-        flex-wrap: wrap
-        justify-content: space-between
+        flex-direction: column
+        align-items: center
 
         .curation-image-container
-            width: 24%
             margin-bottom: 10px
-            height: 1%
             background-color: white
             position: relative
             display: flex
             flex-direction: column
+            box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.3)
+            -webkit-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.3)
+            -moz-box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.4)
 
             img
                 width: 100%
@@ -90,6 +135,33 @@
                         svg
                             color: #808080
                             font-size: 1.2em
+
+        #curation-load-more-button
+            font-size: 0.8em
+            color: white
+            background-color: $theme-faded-red
+            height: 2.5em
+            width: 10em
+            display: flex
+            justify-content: center
+            align-items: center
+            border-radius: 4px
+            &:hover
+                background-color: $theme-red
+            box-shadow: 0px 0px 3px 2px rgba(0,0,0,0.1)
+            -webkit-box-shadow: 0px 0px 3px 2px rgba(0,0,0,0.1)
+            -moz-box-shadow: 0px 0px 3px 2px rgba(0,0,0,0.1)
+
+        #curation-load-no-more
+            font-size: 0.8em
+            height: 2.5em
+            width: 40%
+            display: flex
+            justify-content: center
+            align-items: center
+            border-top: 1px solid $theme-red
+            margin-top: 10px
+
 
     .curated-modal-image-container
         position: fixed

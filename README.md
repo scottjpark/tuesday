@@ -4,6 +4,10 @@ A planned collection of personal microservices
 
 ## To Do
 
+### Curation
+- Scroll through images with mouseclick/keyboard press
+- Random image display/timer
+
 ### Signup/Login
 
 - Display errors in signup/login pages

@@ -39,6 +39,8 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     profile_image = models.ImageField(
         upload_to='media/profile_image/', null=True)
+    view_nsfw = models.BooleanField(default=True, null=False)
+    view_private = models.BooleanField(default=True, null=False)
 
     objects = UserAccountManager()
 

@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from django.core.files import File
 from django.http import HttpResponse
 from .forms import ProfileImageForm
-from .serializers import UserCreateSerializer, UserSerializer
-from django.views.decorators.csrf import ensure_csrf_cookie
+from .serializers import UserCreateSerializer, UserSerializer, UserSettingsSerializer
+from .models import UserAccount
 
 
 class RegisterView(APIView):
@@ -41,9 +41,8 @@ class ResetUserView(APIView):
         return response
 
 
-class UserAvatarView(APIView):
+class UserSettingsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-
     def post(self, request):
         user = request.user
         form = ProfileImageForm(request.POST, request.FILES)
@@ -58,8 +57,21 @@ class UserAvatarView(APIView):
             return Response(data=errors, status=status.HTTP_400_BAD_REQUEST)
 
     permission_classes = [permissions.IsAuthenticated]
-
     def get(self, request):
         user = request.user
-        user = UserSerializer(user)
+        user = UserSettingsSerializer(user)
+        return Response(data=user.data, status=status.HTTP_200_OK)
+
+    permission_classes = [permissions.IsAuthenticated]
+    def patch(self, request):
+        data = request.data
+        user = request.user
+
+        if 'viewNSFW' in data.keys():
+            user.view_nsfw = not data['viewNSFW']
+        if 'viewPrivate' in data.keys():
+            user.view_private = not data['viewPrivate']
+        user.save()
+
+        user = UserSettingsSerializer(user)
         return Response(data=user.data, status=status.HTTP_200_OK)

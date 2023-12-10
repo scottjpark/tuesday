@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { uploadAvatar, getAvatar } from './userActions'
+import { uploadAvatar, getUserSettings, updateUserSettings } from './userActions'
 
 const initialState = {
     avatarURL: 'https://dmcfse5dawjc0.cloudfront.net/media/default.webp',
     loading: false,
+    viewNSFW: false,
+    viewPrivate: false
 }
 
 export const userSlice = createSlice({
@@ -15,14 +17,33 @@ export const userSlice = createSlice({
             .addCase(uploadAvatar.pending, (state) => {
                 state.loading = true
             })
-            .addCase(uploadAvatar.fulfilled, (state, payload) => {
+            .addCase(uploadAvatar.fulfilled, (state) => {
                 state.loading = false
             })
-            .addCase(uploadAvatar.rejected, (state, payload) => {
+            .addCase(uploadAvatar.rejected, (state) => {
                 state.loading = false
             })
-            .addCase(getAvatar.fulfilled, (state, payload) => {
+            .addCase(getUserSettings.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(getUserSettings.fulfilled, (state, payload) => {
                 if (payload.payload.profile_image) state.avatarURL = payload.payload.profile_image
+                state.viewNSFW = payload.payload.view_nsfw
+                state.viewPrivate = payload.payload.view_private
+            })
+            .addCase(getUserSettings.rejected, (state) => {
+                state.loading = true
+            })
+            .addCase(updateUserSettings.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(updateUserSettings.fulfilled, (state, payload) => {
+                if (payload.payload.profile_image) state.avatarURL = payload.payload.profile_image
+                state.viewNSFW = payload.payload.view_nsfw
+                state.viewPrivate = payload.payload.view_private
+            })
+            .addCase(updateUserSettings.rejected, (state) => {
+                state.loading = true
             })
     }
 })

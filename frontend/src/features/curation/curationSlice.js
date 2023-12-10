@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loadImages, updateImage, deleteImage } from './curationActions'
+import { loadImages, reloadImages, updateImage, deleteImage } from './curationActions'
 
 const initialState = {
-    offset: 0,
-    loading: false,
     images: [],
-    imageDetailLoading: false,
-    updatedImage: null
+    moreleft: true,
+    updatedImage: null,
+    loading: false,
+    imageDetailLoading: false
 }
 
 export const curationSlice = createSlice({
@@ -20,9 +20,21 @@ export const curationSlice = createSlice({
             })
             .addCase(loadImages.fulfilled, (state, payload) => {
                 state.loading = false
-                state.images = payload.payload.data
+                state.images = [...state.images, ...payload.payload.data.images]
+                state.moreleft = payload.payload.data.more
             })
             .addCase(loadImages.rejected, (state) => {
+                state.loading = false
+            })
+            .addCase(reloadImages.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(reloadImages.fulfilled, (state, payload) => {
+                state.loading = false
+                state.images = payload.payload.data.images
+                state.moreleft = payload.payload.data.more
+            })
+            .addCase(reloadImages.rejected, (state) => {
                 state.loading = false
             })
             .addCase(updateImage.pending, (state) => {
