@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import cookie from 'cookie'
-import { getAvatar } from '../user/userActions'
+import { getUserSettings } from '../user/userActions'
 
 export const register = createAsyncThunk('/api/users/register/', async (userData, thunkAPI) => {
     const config = {
@@ -78,7 +78,7 @@ export const getUser = createAsyncThunk('/api/users/user/', async (access, thunk
         if (response.status === 200) {
 
             const { dispatch } = thunkAPI
-            dispatch(getAvatar(access))
+            dispatch(getUserSettings(access))
 
             return response.data
         } else {

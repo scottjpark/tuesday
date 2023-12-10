@@ -16,7 +16,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = ['tuesday-production.up.railway.app', 'localhost']
+ALLOWED_HOSTS = ['tuesday-production.up.railway.app', 'localhost', 'tuesday.raphire.net']
 
 # Application definition
 

@@ -87,7 +87,7 @@ export function CuratedImageModal(data) {
             savedBy &&
             <div className="curated-modal-details-credits">
               <p>Image saved by {savedBy}</p>
-              <DeleteForeverIcon onClick={deleteImageForever} />
+              {imageOwner ? <DeleteForeverIcon onClick={deleteImageForever} /> : <div />}
             </div>
           }
         </div>
