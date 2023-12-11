@@ -58,7 +58,7 @@ export function CurationGallery(data) {
                         <CircularProgress /> :
                         moreleft ?
                             <div id="curation-load-more-button" onClick={loadMoreImages}>Load More</div> :
-                            <div id="curation-load-no-more" onClick={loadMoreImages}>No more images</div>
+                            <div id="curation-load-no-more">No more images</div>
                 }
             </div>
         </>

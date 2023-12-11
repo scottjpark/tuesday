@@ -8,6 +8,7 @@ from .models import CuratedImage, Tag, Artist, DisplayName
 from .serializers import ImageSerializer
 from django.core.files.base import ContentFile
 from django.db.models import Q
+from django.utils.crypto import get_random_string
 
 def download_image_from_url(url):
     # Removes twitter downscaling
@@ -24,7 +25,8 @@ def download_image_from_url(url):
     if response.status_code == 200:
         parsed_url = urlparse(url)
         query_params = parse_qs(parsed_url.query)
-        format_value = query_params.get('format', ['jpg'])[0]
+        filename_randomizer = get_random_string(length=8)
+        format_value = query_params.get('format', ['jpg'])[0] + filename_randomizer
         filename = url.split('/')[-1].split('?')[0]
         image_data = response.content
         stream = BytesIO(image_data)
