@@ -25,13 +25,12 @@ def download_image_from_url(url):
     if response.status_code == 200:
         parsed_url = urlparse(url)
         query_params = parse_qs(parsed_url.query)
-        filename_randomizer = get_random_string(length=8)
-        format_value = query_params.get('format', ['jpg'])[0] + filename_randomizer
-        filename = url.split('/')[-1].split('?')[0]
+        filename_randomizer = get_random_string(length=16)
+        format_value = query_params.get('format', ['jpg'])[0]
         image_data = response.content
         stream = BytesIO(image_data)
         img_content = ContentFile(
-            stream.getvalue(), f'{filename}.{format_value}')
+            stream.getvalue(), f'{filename_randomizer}.{format_value}')
         return img_content
     return None
 
