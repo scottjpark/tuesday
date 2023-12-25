@@ -4,16 +4,17 @@ import cookie from 'cookie'
 
 export const loadImages = createAsyncThunk(
     'curation/loadimages',
-    async (offset, thunkAPI) => {
+    async (params, thunkAPI) => {
         const { access } = cookie.parse(document.cookie, 'access')
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${access}`
-            }
+            },
+            params
         }
         try {
-            const response = await axios.get(`/api/curation/curated_images/?offset=${offset}`, config)
+            const response = await axios.get(`/api/curation/curated_images/`, config)
             if (response.status === 200) {
                 return { success: 'Successfully Uploaded', data: response.data }
             } else {
@@ -27,13 +28,14 @@ export const loadImages = createAsyncThunk(
 
 export const reloadImages = createAsyncThunk(
     'curation/reloadimages',
-    async (_, thunkAPI) => {
+    async (params, thunkAPI) => {
         const { access } = cookie.parse(document.cookie, 'access')
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${access}`
-            }
+            },
+            params
         }
         try {
             const response = await axios.get(`/api/curation/curated_images/?offset=0`, config)
@@ -93,5 +95,12 @@ export const deleteImage = createAsyncThunk(
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data)
         }
+    }
+)
+
+export const setSearchFilter = createAsyncThunk(
+    'curation/searchfilter',
+    async (searchKeys, thunkAPI) => {
+        return { success: [searchKeys.split(',')]}
     }
 )

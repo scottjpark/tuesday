@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { CuratedImageModal } from './galleryComponents/imageContainerComponents/imageModal'
 import { loadImages, reloadImages } from '../../../features/curation/curationActions';
@@ -12,7 +12,7 @@ export function CurationGallery(data) {
     const [modalDisplay, setModalDisplay] = useState(false)
     const [modalImage, setModalImage] = useState(null)
 
-    const { images, loading, moreleft } = useSelector(state => state.curation)
+    const { images, loading, moreleft, searchKeys } = useSelector(state => state.curation)
     const [displayImages, setDisplayImages] = useState([])
     const [loadedOffset, setLoadedOffset] = useState(0)
 
@@ -20,8 +20,13 @@ export function CurationGallery(data) {
 
     // Initial Image Load
     const dispatch = useDispatch()
+
     useEffect(() => {
-        dispatch(loadImages(loadedOffset))
+        const params = {
+            offset: loadedOffset,
+            searchKeys: ''
+        }
+        dispatch(loadImages(params))
     }, [dispatch, loadedOffset]);
 
     // Sets loaded images
@@ -34,9 +39,18 @@ export function CurationGallery(data) {
         setLoadedOffset(newOffset)
     }
 
+    const firstImageLoad = useRef(true)
     useEffect(() => {
-        dispatch(reloadImages())
-    }, [dispatch, viewNSFW, viewPrivate])
+        if (firstImageLoad.current) {
+            firstImageLoad.current = false
+            return
+        }
+        const params = {
+            offset: 0,
+            searchKeys: searchKeys.join(',')
+        }
+        dispatch(reloadImages(params))
+    }, [dispatch, viewNSFW, viewPrivate, searchKeys])
 
     // Scroll through images with left/right arrow keys
     const handleImageChange = (e) => {

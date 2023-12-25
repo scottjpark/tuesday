@@ -1,6 +1,5 @@
 import { CurationSearchBar } from './components/searchBar'
 import { CurationGallery } from './components/gallery'
-
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUserSettings } from '../../features/user/userActions'
 

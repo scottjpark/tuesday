@@ -1,14 +1,18 @@
 import requests
+from itertools import chain
 from io import BytesIO
+from functools import reduce
+
 from urllib.parse import urlparse, parse_qs
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import CuratedImage, Tag, Artist, DisplayName
-from .serializers import ImageSerializer
 from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.utils.crypto import get_random_string
+
+from .models import CuratedImage, Tag, Artist, DisplayName
+from .serializers import ImageSerializer
 
 def download_image_from_url(url):
     # Removes twitter downscaling
@@ -91,9 +95,7 @@ class CuratedImagesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         user = request.user
-        data = request.data
 
-        search_keys = data.get('search')
         view_nsfw = user.view_nsfw
         view_private = user.view_private
 
@@ -101,6 +103,22 @@ class CuratedImagesView(APIView):
         offset = int(request.GET.get('offset', 0))
         offset_start = offset * 30
         offset_end = (offset * 30) + 30
+
+        # filter by search keys if exists
+        search_keys = request.GET.get('searchKeys')
+        if search_keys is not None:
+            search_keys = search_keys.split(",")
+            search_keys = [_.strip() for _ in search_keys]
+        else:
+            search_keys = []
+
+        search_filtered_images = CuratedImage.objects.filter(
+            reduce(lambda x, y: x | y, [
+                Q(tags__tag_name__contains=word) |
+                Q(artist_names__artist_name__contains=word) |
+                Q(display_name__display_name__contains=word) for word in search_keys
+            ])
+        ).distinct().order_by('-id')
 
         def _get_query_filter():
             if view_nsfw and view_private:           # only want to see my images, regardless of NSFW
@@ -112,8 +130,8 @@ class CuratedImagesView(APIView):
             elif not view_nsfw and not view_private: # I want to see all public images, as well as my own private images, SFW only
                 return (Q(nsfw=False, private=False) | Q(nsfw=False, user=user))
 
-        images = CuratedImage.objects.filter(_get_query_filter()).order_by('-id')[offset_start:offset_end]
-        has_more_data = CuratedImage.objects.filter(_get_query_filter()).count() > offset_end
+        images = search_filtered_images.filter(_get_query_filter()).order_by('-id')[offset_start:offset_end]
+        has_more_data = search_filtered_images.filter(_get_query_filter()).count() > offset_end
 
         serializer = ImageSerializer(images, many=True)
         response_data = serializer.data

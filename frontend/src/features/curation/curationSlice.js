@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loadImages, reloadImages, updateImage, deleteImage } from './curationActions'
+import { loadImages, reloadImages, updateImage, deleteImage, setSearchFilter } from './curationActions'
 
 const initialState = {
     images: [],
     moreleft: true,
     updatedImage: null,
     loading: false,
-    imageDetailLoading: false
+    imageDetailLoading: false,
+    searchKeys: []
 }
 
 export const curationSlice = createSlice({
@@ -65,6 +66,16 @@ export const curationSlice = createSlice({
             })
             .addCase(deleteImage.rejected, (state) => {
                 state.imageDetailLoading = false
+            })
+            .addCase(setSearchFilter.fulfilled, (state, payload) => {
+                state.loading = false
+                state.searchKeys = payload.payload.success
+            })
+            .addCase(setSearchFilter.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(setSearchFilter.rejected, (state) => {
+                state.loading = false
             })
     }
 })
