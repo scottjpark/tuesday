@@ -38,11 +38,35 @@ export function CurationGallery(data) {
         dispatch(reloadImages())
     }, [dispatch, viewNSFW, viewPrivate])
 
+    // Scroll through images with left/right arrow keys
+    const handleImageChange = (e) => {
+        if (e.code === 'Escape') {
+            handleModalClose()
+        }
+        
+        if (['ArrowLeft', 'ArrowRight'].includes(e.code) && modalImage && images) {
+            e.preventDefault()
+            const newId = e.code === 'ArrowRight' ? modalImage.id - 1 : modalImage.id + 1;
+            const newModalImage = images.filter((image) => image.id === newId)[0];
+            if (newModalImage) {
+                setModalImage(newModalImage)
+            }
+        }
+    }
+
+    const handleModalClose = () => {
+        setModalDisplay(false)
+        setModalImage(null)
+    };
+
     return (
         <>
             {
                 modalDisplay && modalImage &&
-                <CuratedImageModal data={{ modalImage, setModalDisplay, setModalImage }} />
+                <>
+                    <CuratedImageModal data={{ modalImage, setModalDisplay, setModalImage, handleModalClose, handleImageChange }} />
+                    <div className="curated-modal-background" onClick={handleModalClose} />
+                </>
             }
 
             <div className="curation-display">

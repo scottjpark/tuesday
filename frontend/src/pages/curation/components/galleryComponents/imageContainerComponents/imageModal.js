@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { updateImage, deleteImage } from '../../../../../features/curation/curationActions'
@@ -11,15 +11,9 @@ import CircularProgress from '@mui/material/CircularProgress'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export function CuratedImageModal(data) {
-  const handleClose = () => {
-    data.data.setModalDisplay(false)
-    data.data.setModalImage(null)
-  };
-
   const { modalImage } = data.data
   const { imageDetailLoading } = useSelector(state => state.curation)
   const auth = useSelector(state => state.auth)
-
   const {
     id,
     artist_names,
@@ -27,7 +21,7 @@ export function CuratedImageModal(data) {
     image,
     tweet_url,
     user
-  } = modalImage;
+  } = data.data.modalImage;
 
   const artistName = (artist_names.length === 0 || display_name.length === 0) ? '' : display_name[0].display_name + '@' + artist_names[0].artist_name
   const twitterLink = (artist_names.length === 0 || display_name.length === 0) ? 'https://twitter.com' : `https://twitter.com/${artist_names[0].artist_name}`
@@ -38,11 +32,23 @@ export function CuratedImageModal(data) {
   const [nsfw, setNSFW] = useState(modalImage.nsfw)
   const [privateImage, setPrivateImage] = useState(modalImage.privacy_status)
 
-  const emptyStagedChanges = { id, tagAdd: [], tagRemove: [], nsfw, privateImage, changed: false }
+  useEffect(() => {
+    setTags(() => data.data.modalImage.tags)
+    setNSFW(() => data.data.modalImage.nsfw)
+    setPrivateImage(() => data.data.modalImage.privacy_status)
+  }, [data.data.modalImage])
+
+  useEffect(() => {
+    window.addEventListener('keydown', data.data.handleImageChange)
+    return () => {window.removeEventListener('keydown', data.data.handleImageChange)}
+  }, [modalImage, data.data.handleImageChange])
+
+  const emptyStagedChanges = { tagAdd: [], tagRemove: [], nsfw, privateImage, changed: false }
   const [stagedChanges, setStagedChanges] = useState(emptyStagedChanges)
   const dispatch = useDispatch()
 
   const handleStagedChanges = () => {
+    stagedChanges.id = id
     dispatch(updateImage(stagedChanges))
     setStagedChanges(() => emptyStagedChanges)
   }
@@ -56,7 +62,7 @@ export function CuratedImageModal(data) {
 
   const deleteImageForever = () => {
     dispatch(deleteImage(id)).then(() => {
-      handleClose()
+      data.data.handleModalClose()
     })
   }
 
@@ -92,7 +98,6 @@ export function CuratedImageModal(data) {
           }
         </div>
       </div>
-      <div className="curated-modal-background" onClick={handleClose} />
     </>
   );
 }
