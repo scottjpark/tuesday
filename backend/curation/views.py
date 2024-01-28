@@ -101,8 +101,8 @@ class CuratedImagesView(APIView):
 
         # return only needed image data
         offset = int(request.GET.get('offset', 0))
-        offset_start = offset * 30
-        offset_end = (offset * 30) + 30
+        offset_start = offset * 50
+        offset_end = (offset * 50) + 50
 
         # filter by search keys if exists
         search_keys = request.GET.get('searchKeys')

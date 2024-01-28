@@ -57,7 +57,7 @@ export function CurationGallery(data) {
         if (e.code === 'Escape') {
             handleModalClose()
         }
-        
+
         if (['ArrowLeft', 'ArrowRight'].includes(e.code) && modalImage && images) {
             e.preventDefault()
             const newId = e.code === 'ArrowRight' ? modalImage.id - 1 : modalImage.id + 1;
@@ -84,7 +84,7 @@ export function CurationGallery(data) {
             }
 
             <div className="curation-display">
-                <Masonry columnsCount={4} gutter="15px">
+                <Masonry columnsCount={5} gutter="15px">
                     {
                         displayImages.map(image => {
                             return <ImageContainer key={image.id} data={{ image, setModalDisplay, setModalImage }} />
