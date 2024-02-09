@@ -16,7 +16,7 @@ export const loadImages = createAsyncThunk(
         try {
             const response = await axios.get(`/api/curation/curated_images/`, config)
             if (response.status === 200) {
-                return { success: 'Successfully Uploaded', data: response.data }
+                return { success: 'Successfully Loaded', data: response.data }
             } else {
                 return { failure: 'Something went wrong' }
             }
@@ -38,9 +38,9 @@ export const reloadImages = createAsyncThunk(
             params
         }
         try {
-            const response = await axios.get(`/api/curation/curated_images/?offset=0`, config)
+            const response = await axios.get(`/api/curation/curated_images/`, config)
             if (response.status === 200) {
-                return { success: 'Successfully Uploaded', data: response.data }
+                return { success: 'Successfully Loaded', data: response.data }
             } else {
                 return { failure: 'Something went wrong' }
             }
@@ -101,6 +101,13 @@ export const deleteImage = createAsyncThunk(
 export const setSearchFilter = createAsyncThunk(
     'curation/searchfilter',
     async (searchKeys, thunkAPI) => {
-        return { success: [searchKeys.split(',')]}
+        return { success: [searchKeys.split(',')] }
+    }
+)
+
+export const setRandomOrder = createAsyncThunk(
+    'curation/randomOrder',
+    async (randomOrder, thunkAPI) => {
+        return { orderSettings: randomOrder }
     }
 )

@@ -2,6 +2,7 @@ import requests
 from itertools import chain
 from io import BytesIO
 from functools import reduce
+from random import shuffle, sample
 
 from urllib.parse import urlparse, parse_qs
 from rest_framework import permissions, status
@@ -90,7 +91,6 @@ class SaveImageView(APIView):
 
         return Response('Image saved successfully', status=status.HTTP_201_CREATED)
 
-
 class CuratedImagesView(APIView):
     permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
@@ -99,41 +99,60 @@ class CuratedImagesView(APIView):
         view_nsfw = user.view_nsfw
         view_private = user.view_private
 
-        # return only needed image data
-        offset = int(request.GET.get('offset', 0))
-        offset_start = offset * 50
-        offset_end = (offset * 50) + 50
+        load_count = int(request.GET.get('loadCount', 50))
 
-        # filter by search keys if exists
+        # Filter by search keys if exists
         search_keys = request.GET.get('searchKeys')
         if search_keys is not None:
             search_keys = search_keys.split(",")
             search_keys = [_.strip() for _ in search_keys]
         else:
             search_keys = []
+        def _get_search_query_filter():
+            return (
+                reduce(lambda x, y: x | y, [
+                    Q(tags__tag_name__contains=word) |
+                    Q(artist_names__artist_name__contains=word) |
+                    Q(display_name__display_name__contains=word) for word in search_keys
+                ])
+            )
 
-        search_filtered_images = CuratedImage.objects.filter(
-            reduce(lambda x, y: x | y, [
-                Q(tags__tag_name__contains=word) |
-                Q(artist_names__artist_name__contains=word) |
-                Q(display_name__display_name__contains=word) for word in search_keys
-            ])
-        ).distinct().order_by('-id')
+        # Filter out already loaded images by ID
+        loaded_ids = request.GET.get('loadedImageIds')
+        if loaded_ids:
+            loaded_ids = loaded_ids.split('|')
+        else:
+            loaded_ids = []
 
-        def _get_query_filter():
-            if view_nsfw and view_private:           # only want to see my images, regardless of NSFW
+        # Filter by user conditions
+        def _get_user_query_filter():
+            if view_nsfw and view_private:                  # only want to see my images, regardless of NSFW
                 return Q(user=user)
-            elif not view_nsfw and view_private:     # only want to see my images, SFW only
+            elif not view_nsfw and view_private:            # only want to see my images, SFW only
                 return Q(nsfw=False, user=user)
-            elif view_nsfw and not view_private:     # I want to see all public images, as well as my own private images, regardless of NSFW, 
+            elif view_nsfw and not view_private:            # I want to see all public images, as well as my own private images, regardless of NSFW, 
                 return (Q(private=False) | Q(user=user))
-            elif not view_nsfw and not view_private: # I want to see all public images, as well as my own private images, SFW only
+            elif not view_nsfw and not view_private:        # I want to see all public images, as well as my own private images, SFW only
                 return (Q(nsfw=False, private=False) | Q(nsfw=False, user=user))
 
-        images = search_filtered_images.filter(_get_query_filter()).order_by('-id')[offset_start:offset_end]
-        has_more_data = search_filtered_images.filter(_get_query_filter()).count() > offset_end
+        filtered_images = CuratedImage.objects.filter(
+            _get_search_query_filter(),
+            _get_user_query_filter()
+        ).exclude(id__in=loaded_ids).distinct()
 
-        serializer = ImageSerializer(images, many=True)
+        filtered_image_ids = list(filtered_images.values_list('pk', flat=True))
+
+        # Randomize Image Order
+        random_order = request.GET.get('randomOrder')
+        if random_order == 'true':
+            finalized_images = CuratedImage.objects.filter(id__in=filtered_image_ids).order_by('?')
+        else:
+            finalized_images = CuratedImage.objects.filter(id__in=filtered_image_ids).order_by('-pk')
+
+        has_more_data = finalized_images.count() > load_count
+        finalized_images = finalized_images[:load_count]
+
+        serializer = ImageSerializer(finalized_images, many=True)
         response_data = serializer.data
 
         return Response({'images': response_data, 'more': has_more_data}, status=status.HTTP_200_OK)
