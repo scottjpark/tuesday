@@ -142,7 +142,12 @@ class CuratedImagesView(APIView):
 
         filtered_image_ids = list(filtered_images.values_list('pk', flat=True))
 
-        finalized_images = CuratedImage.objects.filter(id__in=filtered_image_ids).order_by('?')
+        # Randomize Image Order
+        random_order = request.GET.get('randomOrder')
+        if random_order == 'true':
+            finalized_images = CuratedImage.objects.filter(id__in=filtered_image_ids).order_by('?')
+        else:
+            finalized_images = CuratedImage.objects.filter(id__in=filtered_image_ids).order_by('-pk')
 
         has_more_data = finalized_images.count() > load_count
         finalized_images = finalized_images[:load_count]

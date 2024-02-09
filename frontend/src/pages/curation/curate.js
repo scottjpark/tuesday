@@ -3,8 +3,11 @@ import { CurationGallery } from './components/gallery'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUserSettings } from '../../features/user/userActions'
 
+import CircularProgress from '@mui/material/CircularProgress'
+
 export function Curate() {
     const { viewNSFW, viewPrivate } = useSelector(state => state.user)
+    const { reloading } = useSelector(state => state.curation)
 
     const dispatch = useDispatch()
 
@@ -25,7 +28,7 @@ export function Curate() {
     return (
         <div id="curation-wrapper">
             <CurationSearchBar data={{ viewNSFW, viewPrivate, handleNSFWUserSettings, handlePrivateUserSettings }} />
-            <CurationGallery data={{ viewNSFW, viewPrivate }} />
+            {reloading ? <><div className="whitespace20" /><CircularProgress /></> : <CurationGallery data={{ viewNSFW, viewPrivate }} />}
         </div>
     )
 }

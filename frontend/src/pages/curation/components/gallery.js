@@ -12,7 +12,7 @@ export function CurationGallery(data) {
     const [modalDisplay, setModalDisplay] = useState(false)
     const [modalImage, setModalImage] = useState(null)
 
-    const { images, loadedImageIds, loading, moreleft, searchKeys } = useSelector(state => state.curation)
+    const { images, loadedImageIds, loading, moreleft, searchKeys, randomOrder } = useSelector(state => state.curation)
     const [displayImages, setDisplayImages] = useState([])
 
     const { viewNSFW, viewPrivate } = data.data
@@ -21,13 +21,17 @@ export function CurationGallery(data) {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const params = {
-            loadCount: 50,
-            searchKeys: '',
-            loadedImageIds: loadedImageIds.join('|'),
+        if (images.length === 0) {
+            const params = {
+                loadCount: 50,
+                searchKeys: '',
+                loadedImageIds: '',
+                randomOrder,
+            }
+            dispatch(loadImages(params))
         }
-        dispatch(loadImages(params))
-    }, [dispatch]);
+        return
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Sets loaded images
     useEffect(() => {
@@ -37,8 +41,9 @@ export function CurationGallery(data) {
     const loadMoreImages = () => {
         const params = {
             loadCount: 50,
-            searchKeys: '',
+            searchKeys: searchKeys.join(','),
             loadedImageIds: loadedImageIds.join('|'),
+            randomOrder,
         }
         dispatch(loadImages(params))
     }
@@ -50,12 +55,13 @@ export function CurationGallery(data) {
             return
         }
         const params = {
-            loadCount: 10,
+            loadCount: 50,
             searchKeys: searchKeys.join(','),
-            loadedImageIds: loadedImageIds.join('|'),
+            loadedImageIds: '',
+            randomOrder,
         }
         dispatch(reloadImages(params))
-    }, [dispatch, viewNSFW, viewPrivate, searchKeys])
+    }, [viewNSFW, viewPrivate, searchKeys, randomOrder]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // Scroll through images with left/right arrow keys
     const handleImageChange = (e) => {
@@ -98,7 +104,7 @@ export function CurationGallery(data) {
                 </Masonry>
                 {
                     loading ?
-                        <CircularProgress /> :
+                        <><div className="whitespace10" /><CircularProgress /></> :
                         moreleft ?
                             <div id="curation-load-more-button" onClick={loadMoreImages}>Load More</div> :
                             <div id="curation-load-no-more">No more images</div>
