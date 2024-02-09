@@ -12,8 +12,9 @@ export function CurationGallery(data) {
     const [modalDisplay, setModalDisplay] = useState(false)
     const [modalImage, setModalImage] = useState(null)
 
-    const { images, loadedImageIds, loading, moreleft, searchKeys } = useSelector(state => state.curation)
+    const { images, loading, moreleft, searchKeys } = useSelector(state => state.curation)
     const [displayImages, setDisplayImages] = useState([])
+    const [loadedOffset, setLoadedOffset] = useState(0)
 
     const { viewNSFW, viewPrivate } = data.data
 
@@ -22,12 +23,11 @@ export function CurationGallery(data) {
 
     useEffect(() => {
         const params = {
-            loadCount: 50,
-            searchKeys: '',
-            loadedImageIds: loadedImageIds.join('|'),
+            offset: loadedOffset,
+            searchKeys: ''
         }
         dispatch(loadImages(params))
-    }, [dispatch]);
+    }, [dispatch, loadedOffset]);
 
     // Sets loaded images
     useEffect(() => {
@@ -35,12 +35,8 @@ export function CurationGallery(data) {
     }, [images])
 
     const loadMoreImages = () => {
-        const params = {
-            loadCount: 50,
-            searchKeys: '',
-            loadedImageIds: loadedImageIds.join('|'),
-        }
-        dispatch(loadImages(params))
+        const newOffset = loadedOffset + 1
+        setLoadedOffset(newOffset)
     }
 
     const firstImageLoad = useRef(true)
@@ -50,9 +46,8 @@ export function CurationGallery(data) {
             return
         }
         const params = {
-            loadCount: 10,
-            searchKeys: searchKeys.join(','),
-            loadedImageIds: loadedImageIds.join('|'),
+            offset: 0,
+            searchKeys: searchKeys.join(',')
         }
         dispatch(reloadImages(params))
     }, [dispatch, viewNSFW, viewPrivate, searchKeys])

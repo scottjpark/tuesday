@@ -3,6 +3,7 @@ import { loadImages, reloadImages, updateImage, deleteImage, setSearchFilter } f
 
 const initialState = {
     images: [],
+    loadedImageIds: [],
     moreleft: true,
     updatedImage: null,
     loading: false,
@@ -22,6 +23,10 @@ export const curationSlice = createSlice({
             .addCase(loadImages.fulfilled, (state, payload) => {
                 state.loading = false
                 state.images = [...state.images, ...payload.payload.data.images]
+                state.loadedImageIds = [
+                    ...state.loadedImageIds,
+                    ...payload.payload.data.images.map(image => image.id)
+                ]
                 state.moreleft = payload.payload.data.more
             })
             .addCase(loadImages.rejected, (state) => {
@@ -32,6 +37,10 @@ export const curationSlice = createSlice({
             })
             .addCase(reloadImages.fulfilled, (state, payload) => {
                 state.loading = false
+                state.loadedImageIds = [
+                    ...state.loadedImageIds,
+                    ...payload.payload.data.images.map(image => image.id)
+                ]
                 state.images = payload.payload.data.images
                 state.moreleft = payload.payload.data.more
             })
@@ -59,6 +68,9 @@ export const curationSlice = createSlice({
                     return image.id !== imageID
                 })
                 state.images = newImages
+                state.loadedImageIds = [
+                    state.loadedImageIds.filter(image => image.id !== imageID)
+                ]
                 state.imageDetailLoading = false
             })
             .addCase(deleteImage.pending, (state) => {
