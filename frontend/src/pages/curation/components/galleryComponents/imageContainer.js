@@ -23,8 +23,8 @@ export function ImageContainer(data) {
             <div className="image-details">
                 <div className="image-details-upper">
                     <div className="source-container">
-                        <a href={twitterLink}><p className="username">{artistName}</p></a>
-                        <a href={tweet_url}><img className="twitter-icon" src={process.env.PUBLIC_URL + '/static/assets/twitter_icon.png'} alt='' /></a>
+                        <a href={twitterLink} target="_blank" rel="noreferrer"><p className="username">{artistName}</p></a>
+                        <a href={tweet_url} target="_blank" rel="noreferrer"><img className="twitter-icon" src={process.env.PUBLIC_URL + '/static/assets/twitter_icon.png'} alt='' /></a>
                     </div>
                 </div>
                 <div className="image-details-lower">

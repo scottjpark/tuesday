@@ -61,7 +61,10 @@ export function SignUp() {
                     />
                 </div>
                 {loading ?
-                    <CircularProgress /> :
+                    <>
+                        <div className="whitespace50" />
+                        <CircularProgress />
+                    </> :
                     <button type='submit' onClick={handleSubmit}>Register</button>
                 }
                 <p className='auth-notes'>Already a member? <Link to='/login'>Log in</Link></p>

@@ -49,7 +49,10 @@ export function Login() {
                     />
                 </div>
                 {loading ?
-                    <CircularProgress /> :
+                    <>
+                        <div className="whitespace50" />
+                        <CircularProgress />
+                    </> :
                     <button type='submit' onClick={handleSubmit}>Log In</button>
                 }
             </form>

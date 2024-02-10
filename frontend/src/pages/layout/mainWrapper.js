@@ -20,7 +20,10 @@ export function MainWrapper() {
             <NavBar />
             <div className="main-wrapper">
                 {loading ?
-                    <CircularProgress /> :
+                    <>
+                        <div className="whitespace20" />
+                        <CircularProgress />
+                    </> :
                     <main>
                         <Routes>
                             <Route path='/' element={<Home />} />

@@ -21,7 +21,10 @@ function App() {
     <BrowserRouter>
       <div className="App">
         {loading ?
-          <CircularProgress /> :
+          <>
+            <div className="whitespace50" />
+            <CircularProgress />
+          </> :
           <Routes>
             <Route path='/*' element={<MainWrapper />} />
             <Route path='/private' element={<Private />} />
