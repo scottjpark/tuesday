@@ -64,18 +64,19 @@ export function CurationGallery(data) {
     }, [viewNSFW, viewPrivate, searchKeys, randomOrder]) // eslint-disable-line react-hooks/exhaustive-deps
 
     // Scroll through images with left/right arrow keys
-    const handleImageChange = (e) => {
+    const handleImageChange = (e, modalImage) => {
         if (e.code === 'Escape') {
             handleModalClose()
         }
 
         if (['ArrowLeft', 'ArrowRight'].includes(e.code) && modalImage && images) {
             e.preventDefault()
-            const newId = e.code === 'ArrowRight' ? modalImage.id - 1 : modalImage.id + 1;
-            const newModalImage = images.filter((image) => image.id === newId)[0];
-            if (newModalImage) {
-                setModalImage(newModalImage)
-            }
+
+            const imageIdx = images.indexOf(modalImage)
+            const prevIdx = imageIdx !== 0 ? imageIdx - 1 : imageIdx
+            const nextIdx = imageIdx !== images.length - 1 ? imageIdx + 1 : imageIdx
+            const newIdx = e.code === 'ArrowLeft' ? prevIdx : nextIdx
+            if (images[newIdx]) setModalImage(images[newIdx])
         }
     }
 

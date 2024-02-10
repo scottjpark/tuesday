@@ -39,9 +39,10 @@ export function CuratedImageModal(data) {
   }, [data.data.modalImage])
 
   useEffect(() => {
-    window.addEventListener('keydown', data.data.handleImageChange)
-    return () => {window.removeEventListener('keydown', data.data.handleImageChange)}
-  }, [modalImage, data.data.handleImageChange])
+    const imageChangeHandler = (e) => { data.data.handleImageChange(e, modalImage) }
+    window.addEventListener('keydown', imageChangeHandler)
+    return () => { window.removeEventListener('keydown', imageChangeHandler) }
+  }, [modalImage]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const emptyStagedChanges = { tagAdd: [], tagRemove: [], nsfw, privateImage, changed: false }
   const [stagedChanges, setStagedChanges] = useState(emptyStagedChanges)
