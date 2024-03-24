@@ -12,4 +12,5 @@ urlpatterns = [
     path('api/admin/', admin.site.urls),
     path('api/users/', include('users.urls')),
     path('api/curation/', include('curation.urls')),
+    path('api/pinboard/', include('pinboard.urls')),
 ]
