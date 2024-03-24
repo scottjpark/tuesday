@@ -20,7 +20,6 @@ ALLOWED_HOSTS = [
     'localhost', 
     'tuesday-production.up.railway.app', 
     'tuesday.raphire.net',
-    'https://u3gkab5soc.execute-api.us-east-1.amazonaws.com/prod/event'
 ]
 
 # Application definition
