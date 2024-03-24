@@ -16,7 +16,12 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = ['tuesday-production.up.railway.app', 'localhost', 'tuesday.raphire.net']
+ALLOWED_HOSTS = [
+    'localhost', 
+    'tuesday-production.up.railway.app', 
+    'tuesday.raphire.net',
+    'https://u3gkab5soc.execute-api.us-east-1.amazonaws.com/prod/event'
+]
 
 # Application definition
 
@@ -27,11 +32,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
-    'curation',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
+    'users',
+    'curation',
+    'pinboard',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
@@ -133,9 +139,15 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-     'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication'
-      ]
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '60/min',
+    }
 }
 
 SIMPLE_JWT = {
@@ -155,3 +167,11 @@ AWS_QUERYSTRING_AUTH = False
 AWS_S3_CUSTOM_DOMAIN = env('AWS_CLOUDFRONT_DOMAIN')
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20971520
+
+# Discord Bot API settings
+DISCORD_APPLICATION_ID = env('DISCORD_APPLICATION_ID')
+DISCORD_AWS_KEY = env('DISCORD_AWS_KEY')
+DISCORD_AWS_SECRET = env('DISCORD_AWS_SECRET')
+DISCORD_BOT_SECRET_KEY = env('DISCORD_BOT_SECRET_KEY')
+DISCORD_PUBLIC_KEY = env('DISCORD_PUBLIC_KEY')
+DISCORD_TEST_GUILD_ID = env('DISCORD_TEST_GUILD_ID')

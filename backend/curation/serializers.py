@@ -1,7 +1,5 @@
-from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer, BooleanField, RelatedField
+from rest_framework.serializers import ModelSerializer, BooleanField
 from .models import CuratedImage, Artist, Tag, DisplayName
-from users.models import UserAccount
 from users.serializers import UserSerializer
 
 

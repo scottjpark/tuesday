@@ -16,6 +16,8 @@ frontend/node_modules
 .vscode
 .DS_Store
 .env
+.env_prod
+.env_dev
 .prod_env
 .env.local
 .env.development.local

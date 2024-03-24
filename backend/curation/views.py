@@ -1,8 +1,6 @@
 import requests
-from itertools import chain
 from io import BytesIO
 from functools import reduce
-from random import shuffle, sample
 
 from urllib.parse import urlparse, parse_qs
 from rest_framework import permissions, status
