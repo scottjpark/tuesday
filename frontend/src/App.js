@@ -2,12 +2,11 @@ import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
-import { verify } from './features/auth/authActions'
-
-import { Login } from './pages/auth/login'
-import { SignUp } from './pages/auth/signup'
-import { Private } from './pages/layout/private'
-import { MainWrapper } from './pages/layout/mainWrapper'
+import { verify } from './features/users/actions/authActions'
+import { Login } from './features/users/components/login'
+import { SignUp } from './features/users/components/signup'
+import { Private } from './layout/components/private'
+import { MainWrapper } from './layout/mainWrapper'
 
 import CircularProgress from '@mui/material/CircularProgress'
 

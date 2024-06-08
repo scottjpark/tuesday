@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import cookie from 'cookie'
-import { getUserSettings } from '../user/userActions'
+import { getUserSettings } from './userActions'
 
 export const register = createAsyncThunk('/api/users/register/', async (userData, thunkAPI) => {
     const config = {

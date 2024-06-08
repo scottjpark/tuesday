@@ -2,11 +2,11 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-import { TopBar } from './top'
-import { NavBar } from './nav'
-import { Profile } from '../account/profile'
-import { Home } from '../home/home'
-import { Curate } from '../curation/curate'
+import { TopBar } from './components/top'
+import { NavBar } from './components/nav'
+import { Home } from './components/home'
+import { Profile } from '../features/users/components/profile'
+import { Curate } from '../features/curation/curate'
 
 import CircularProgress from '@mui/material/CircularProgress'
 

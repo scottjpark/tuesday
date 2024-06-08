@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navigate } from 'react-router-dom'
-import { uploadAvatar } from '../../features/user/userActions'
-import { FileButtons } from '../utils/utils'
+import { uploadAvatar } from '../actions/userActions'
+import { FileButtons } from '../../utils/utils'
 
 export function Profile() {
     const { user, loggedIn } = useSelector(state => state.auth)

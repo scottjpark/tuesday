@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { login } from '../../features/auth/authActions';
+import { register } from '../actions/authActions';
 import { useSelector, useDispatch } from 'react-redux'
 import { Navigate, Link } from 'react-router-dom'
 import CircularProgress from '@mui/material/CircularProgress'
 
-export function Login() {
+export function SignUp() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
 
     const { loggedIn, loading } = useSelector(state => state.auth)
     const dispatch = useDispatch()
@@ -15,17 +16,17 @@ export function Login() {
         e.preventDefault();
         const user = {
             username: username,
-            password: password
+            password: password,
+            email: email
         }
-        dispatch(login(user))
+        dispatch(register(user))
     }
 
-
-    if (loggedIn && !loading) return <Navigate to='/' />
+    if (loggedIn && !loading) return <Navigate to='/loggedIn' />
     return (
         <div id='out-main'>
             <form id='auth'>
-                <h1>Log In</h1>
+                <h1>Register</h1>
                 <div className='auth-fields'>
                     <label>Username</label>
                     <input
@@ -48,13 +49,25 @@ export function Login() {
                         onChange={e => setPassword(e.target.value)}
                     />
                 </div>
+                <div className='auth-fields'>
+                    <label>Email</label>
+                    <input
+                        className='auth-input'
+                        placeholder='email'
+                        name='email'
+                        type='email'
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                </div>
                 {loading ?
                     <>
                         <div className="whitespace50" />
                         <CircularProgress />
                     </> :
-                    <button type='submit' onClick={handleSubmit}>Log In</button>
+                    <button type='submit' onClick={handleSubmit}>Register</button>
                 }
+                <p className='auth-notes'>Already a member? <Link to='/login'>Log in</Link></p>
             </form>
         </div>
     )
