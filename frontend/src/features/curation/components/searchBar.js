@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RedSwitch } from '../../utils/utils'
 import SearchIcon from '@mui/icons-material/Search';
-import { setRandomOrder, setSearchFilter } from '../../../features/curation/curationActions'
+import { setRandomOrder, setSearchFilter } from '../../../features/curation/actions/curationActions'
 
 export function CurationSearchBar(data) {
     const { viewNSFW, viewPrivate, handleNSFWUserSettings, handlePrivateUserSettings } = data.data

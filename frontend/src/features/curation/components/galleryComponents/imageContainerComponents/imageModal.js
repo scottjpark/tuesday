@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { updateImage, deleteImage } from '../../../../../features/curation/curationActions'
+import { updateImage, deleteImage } from '../../../actions/curationActions'
 
 import { SourceContainer } from './imageModalComponents/sourceContainer'
 import { TagContainer } from './imageModalComponents/tagContainer'

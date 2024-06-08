@@ -1,7 +1,7 @@
 import { CurationSearchBar } from './components/searchBar'
 import { CurationGallery } from './components/gallery'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateUserSettings } from '../../features/user/userActions'
+import { updateUserSettings } from '../users/actions/userActions'
 
 import CircularProgress from '@mui/material/CircularProgress'
 

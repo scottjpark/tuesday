@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../features/auth/authActions'
+import { logout } from '../../features/users/actions/authActions'
 
 export function TopBar() {
     const { user } = useSelector(state => state.auth)

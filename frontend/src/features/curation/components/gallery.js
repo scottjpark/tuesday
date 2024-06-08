@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { CuratedImageModal } from './galleryComponents/imageContainerComponents/imageModal'
-import { loadImages, reloadImages } from '../../../features/curation/curationActions';
+import { loadImages, reloadImages } from '../actions/curationActions';
 import { ImageContainer } from './galleryComponents/imageContainer';
 
 import CircularProgress from '@mui/material/CircularProgress'
