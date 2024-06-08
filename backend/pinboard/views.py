@@ -128,7 +128,7 @@ class DiscordBotView(APIView):
             possible_pins = Pin.objects.filter(name__contains=pin_name)
             if len(possible_pins) > 0:
                 if command_name == 'sr':
-                    possible_pins.filter(random=True).order_by('?')
+                    possible_pins = possible_pins.filter(random=True).order_by('?')
                     if possible_pins[0].image:
                         requested_pin_response = possible_pins[0].image.url
                     else:
